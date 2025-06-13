@@ -105,6 +105,7 @@
         const customerReportInfoEl = document.getElementById('customerReportInfo');
         const loadingCustomerReportMsg = customerReportContentEl.querySelector('.loading-customer-report');
         const noCustomerReportDataMsg = customerReportResultContainer.querySelector('.no-customer-report-data');
+        let customerReportData = null;
         
         // --- FUNGSI HELPER ---
         function showCustomNotification(message, type = 'info') {
@@ -561,6 +562,7 @@ function displayProductsForAdmin(products) {
         
         function displayCustomerReport(data) {
             customerReportResultContainer.style.display = 'block';
+            customerReportData = data;
             const { summary, items } = data;
             const formattedStartDate = new Date(summary.startDate + 'T00:00:00').toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'});
             const formattedEndDate = new Date(summary.endDate + 'T00:00:00').toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'});
@@ -585,89 +587,154 @@ function displayProductsForAdmin(products) {
         }
         
 // pdf
+// GANTIKAN FUNGSI LAMA DENGAN VERSI TERBARU YANG SUDAH ADA LOGO & ALAMATNYA
 async function downloadCustomerReportAsPDF() {
-    const { jsPDF } = window.jspdf;
-    const reportContainer = document.getElementById("customerReportResultContainer");
     const printBtn = document.getElementById("printCustomerReportBtn");
-    const logoImgPath = 'img/makandalogo.png'; // Pastikan path ke logo ini benar
-
-    if (!reportContainer) {
-        alert("Laporan belum tersedia untuk dicetak.");
-        return;
-    }
-
-    if (printBtn) printBtn.style.display = "none";
-
-    const toDataURL = url => fetch(url)
-        .then(response => response.blob())
-        .then(blob => new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onloadend = () => resolve(reader.result);
-            reader.onerror = reject;
-            reader.readAsDataURL(blob);
-        }));
 
     try {
+        if (!customerReportData || !customerReportData.items) {
+            showCustomNotification("Data laporan tidak ditemukan untuk dicetak.", "error");
+            return;
+        }
+
+        if (printBtn) printBtn.disabled = true;
+
+        const { jsPDF } = window.jspdf;
         const pdf = new jsPDF('p', 'mm', 'a4');
+        const { summary, items } = customerReportData;
+
+        // --- Pengaturan Dokumen ---
+        const pageMargin = 10;
         const pageWidth = pdf.internal.pageSize.getWidth();
-        const pageMargin = 15;
-        
-        // 1. Tambahkan Logo di bagian atas
+        const pageHeight = pdf.internal.pageSize.getHeight();
+        const contentWidth = pageWidth - (pageMargin * 2);
+        let currentY = pageMargin;
+
+        // --- Fungsi Helper ---
+        const formatTanggal = (tgl) => new Date(tgl).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+
+        // --- TAMBAHAN BARU: LOGIKA UNTUK LOGO & ALAMAT ---
+        const logoImgPath = 'img/makandalogo.png'; // Pastikan path ini benar
+        const alamatToko = "Jalan Nikel, Bugel Mas Indah, Karawaci, Tangerang";
+
+        // Fungsi helper untuk mengubah gambar menjadi format yang bisa dibaca PDF
+        const toDataURL = url => fetch(url)
+            .then(response => response.blob())
+            .then(blob => new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(blob);
+            }));
+
+        // Muat dan gambar logo
         const logoDataUrl = await toDataURL(logoImgPath);
-        const logoWidth = 50;
+        const logoWidth = 40; // Lebar logo di PDF
         const logoHeight = (await (async () => {
             const img = new Image();
             img.src = logoDataUrl;
             await img.decode();
             return img.height * logoWidth / img.width;
         })());
-        
         const logoX = (pageWidth - logoWidth) / 2;
-        const logoY = 10;
-        pdf.addImage(logoDataUrl, 'PNG', logoX, logoY, logoWidth, logoHeight);
+        // Baris kode yang baru dengan kompresi
+        pdf.addImage(logoDataUrl, 'JPEG', logoX, currentY, logoWidth, logoHeight, undefined, 'MEDIUM');
+        currentY += logoHeight + 3; // Pindahkan posisi Y ke bawah logo
 
-        // --- TAMBAHAN BARU UNTUK ALAMAT ---
-        // Tentukan teks dan propertinya
-        const alamatToko = "jalan Nikel, Bugel mas indah, Karawaci Kota Tangerang";
-        pdf.setFontSize(9); // Ukuran font dibuat lebih kecil untuk alamat
+        // Gambar alamat
         pdf.setFont('helvetica', 'normal');
-        pdf.setTextColor(128, 128, 128); // Warna abu-abu agar tidak terlalu mencolok
-
-        // Hitung posisi Y untuk alamat (di bawah logo + sedikit jarak)
-        const alamatY = logoY + logoHeight + 5; // 5mm di bawah logo
-        
-        // Tulis alamat ke PDF dengan alignment 'center'
-        pdf.text(alamatToko, pageWidth / 2, alamatY, { align: 'center' });
+        pdf.setFontSize(8);
+        pdf.text(alamatToko, pageWidth / 2, currentY, { align: 'center' });
+        currentY += 8; // Beri jarak sebelum judul
         // --- AKHIR TAMBAHAN BARU ---
 
-        // Beri jarak setelah alamat sebelum konten laporan
-        const contentStartY = alamatY + 10; // Jarak dari alamat ke konten utama
 
-        // 2. Tambahkan sisa konten laporan menggunakan html2canvas
-        const canvas = await html2canvas(reportContainer, {
-         scale: 1.5, // Turunkan scale
-         useCORS: true
-});
+        // --- Header Dokumen ---
+        pdf.setFont('helvetica', 'bold');
+        pdf.setFontSize(16);
+        pdf.text('Laporan Riwayat Pembelian', pageWidth / 2, currentY, { align: 'center' });
+        currentY += 10;
 
-        const contentImgData = canvas.toDataURL('image/jpeg', 0.8); // Pakai JPEG
-        const contentImgWidth = pageWidth - (pageMargin * 2);
-        const contentImgHeight = canvas.height * contentImgWidth / canvas.width;
-        
-        // Cek apakah konten butuh halaman baru
-        if (contentStartY + contentImgHeight > pdf.internal.pageSize.getHeight()) {
-            pdf.addPage();
-            pdf.addImage(contentImgData, 'PNG', pageMargin, 10, contentImgWidth, contentImgHeight);
-        } else {
-            pdf.addImage(contentImgData, 'PNG', pageMargin, contentStartY, contentImgWidth, contentImgHeight);
-        }
-        
-        pdf.save('Laporan_Riwayat_Pelanggan_Makanda.pdf');
+        // --- Ringkasan (Summary) ---
+        pdf.setFont('helvetica', 'bold');
+        pdf.setFontSize(10);
+        pdf.text('Ringkasan Laporan', pageMargin, currentY);
+        pdf.line(pageMargin, currentY + 1, contentWidth + pageMargin, currentY + 1);
+        currentY += 5;
+
+        pdf.setFont('helvetica', 'normal');
+        pdf.text(`Total Belanja: ${formatRupiah(summary.totalSpending)}`, pageMargin, currentY);
+        pdf.text(`Total Transaksi: ${summary.totalTransactions}`, pageMargin + 80, currentY);
+        currentY += 5;
+        pdf.text(`Total Item Dibeli: ${summary.totalItems}`, pageMargin, currentY);
+        currentY += 10;
+
+        // --- Detail Pembelian (Tabel) ---
+        pdf.setFont('helvetica', 'bold');
+        pdf.text('Detail Pembelian', pageMargin, currentY);
+        pdf.line(pageMargin, currentY + 1, contentWidth + pageMargin, currentY + 1);
+        currentY += 5;
+
+        const drawTableHeader = () => {
+            const headerY = currentY;
+            const colWidths = [25, 20, 65, 15, 30, 35];
+            const headers = ["Tanggal", "ID Order", "Nama Produk", "Qty", "Harga", "Subtotal"];
+            let currentX = pageMargin;
+
+            pdf.setFillColor(230, 230, 230);
+            pdf.rect(pageMargin, headerY, contentWidth, 8, 'F');
+            pdf.setFont('helvetica', 'bold');
+            pdf.setFontSize(9);
+
+            headers.forEach((header, i) => {
+                pdf.text(header, currentX + 2, headerY + 6);
+                currentX += colWidths[i];
+            });
+            currentY += 8;
+        };
+
+        drawTableHeader();
+
+        pdf.setFont('helvetica', 'normal');
+        pdf.setFontSize(8);
+
+        items.forEach(item => {
+            if (currentY + 6 > pageHeight - pageMargin) {
+                pdf.addPage();
+                currentY = pageMargin;
+                drawTableHeader();
+                pdf.setFont('helvetica', 'normal');
+                pdf.setFontSize(8);
+            }
+
+            const subtotal = item.item_price * item.quantity;
+            const colWidths = [25, 20, 65, 15, 30, 35];
+            const rowData = [
+                formatTanggal(item.created_at),
+                item.order_id.toString(),
+                item.item_name,
+                item.quantity.toString(),
+                formatRupiah(item.item_price),
+                formatRupiah(subtotal)
+            ];
+            let currentX = pageMargin;
+
+            rowData.forEach((data, i) => {
+                const align = (i >= 4) ? 'right' : 'left';
+                const textX = (align === 'right') ? (currentX + colWidths[i] - 2) : (currentX + 2);
+                pdf.text(data, textX, currentY + 5, { maxWidth: colWidths[i] - 4, align: align });
+                currentX += colWidths[i];
+            });
+            currentY += 7;
+        });
+
+        pdf.save('Laporan_Riwayat_Makanda.pdf');
 
     } catch (error) {
-        console.error("Gagal membuat PDF:", error);
-        showCustomNotification("Gagal membuat PDF. Pastikan file logo ada.", 'error');
+        console.error("Gagal membuat PDF Laporan:", error);
+        showCustomNotification("Gagal membuat PDF. Cek console untuk detail.", 'error');
     } finally {
-        if (printBtn) printBtn.style.display = "inline-block";
+        if (printBtn) printBtn.disabled = false;
     }
 }
 
