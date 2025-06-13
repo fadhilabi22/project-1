@@ -290,9 +290,105 @@
             });
         }
         
-        // ... (Fungsi Cetak Resi dan event listenernya)
-        function generateAndPrintReceipt(order) { /* ... */ }
-        ordersTableBody.addEventListener('click', async (event) => { /* ... */ });
+        // --- FUNGSI DAN EVENT LISTENER UNTUK CETAK RESI PER ORDER ---
+
+        // Event listener ini akan "mendengarkan" semua klik di dalam tabel pesanan
+        ordersTableBody.addEventListener('click', async (event) => {
+            // Cek apakah yang diklik adalah tombol dengan class 'print-receipt-btn'
+            if (event.target.classList.contains('print-receipt-btn')) {
+                const button = event.target;
+                const orderId = button.dataset.orderId; // Ambil ID Order dari atribut data-*
+                if (!orderId) return;
+
+                button.textContent = 'Mencetak...';
+                button.disabled = true;
+
+                try {
+                    // 1. Ambil detail lengkap order dari backend menggunakan ID-nya
+                    const response = await fetch(`/api/order/${orderId}/details`);
+                    if (!response.ok) {
+                        const errData = await response.json();
+                        throw new Error(errData.message || 'Gagal mengambil detail order.');
+                    }
+                    const orderDetails = await response.json();
+
+                    // 2. Panggil fungsi untuk membuat PDF dari detail order tersebut
+                    await generateAndPrintReceipt(orderDetails);
+
+                } catch (err) {
+                    console.error('Error saat mencetak resi:', err);
+                    showCustomNotification(`Gagal mencetak resi: ${err.message}`, 'error');
+                } finally {
+                    button.textContent = 'Cetak Resi';
+                    button.disabled = false;
+                }
+            }
+        });
+
+        // Fungsi ini bertugas membuat struktrur PDF untuk resi
+        async function generateAndPrintReceipt(order) {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF('p', 'mm', [80, 140]); // Ukuran kertas struk thermal (lebar 80mm)
+
+            // --- Header Resi ---
+            pdf.setFont('helvetica', 'bold');
+            pdf.setFontSize(12);
+            pdf.text('Toko Makanda', 40, 10, { align: 'center' });
+            
+            pdf.setFont('helvetica', 'normal');
+            pdf.setFontSize(7);
+            pdf.text('Jalan Nikel, Bugel Mas Indah, Karawaci, Tangerang', 40, 14, { align: 'center' });
+            pdf.line(5, 16, 75, 16); // Garis pemisah
+
+            // --- Detail Order ---
+            pdf.setFontSize(8);
+            pdf.text(`ID Order: #${order.id}`, 5, 20);
+            pdf.text(`Tanggal: ${new Date(order.created_at).toLocaleString('id-ID')}`, 5, 24);
+            pdf.text(`Status: ${order.status}`, 5, 28);
+            pdf.text(`Kasir: Admin`, 75, 20, { align: 'right' });
+
+
+            // --- Detail Pelanggan & Pengiriman ---
+            if(order.shipping_details) {
+                pdf.text(`Pelanggan: ${order.shipping_details.name || order.user_email}`, 5, 32);
+                pdf.text(`Telp: ${order.shipping_details.phone || 'N/A'}`, 5, 36);
+            }
+            pdf.line(5, 40, 75, 40); // Garis pemisah
+
+            // --- Tabel Item ---
+            let currentY = 44;
+            pdf.setFont('helvetica', 'bold');
+            pdf.text('Item', 5, currentY);
+            pdf.text('Qty', 45, currentY);
+            pdf.text('Harga', 75, currentY, { align: 'right' });
+            pdf.setFont('helvetica', 'normal');
+            currentY += 4;
+
+            order.items.forEach(item => {
+                pdf.text(item.name, 5, currentY, { maxWidth: 38 });
+                pdf.text(item.quantity.toString(), 45, currentY);
+                pdf.text(formatRupiah(item.price * item.quantity), 75, currentY, { align: 'right' });
+                currentY += 4;
+            });
+
+            // --- Total ---
+            pdf.line(5, currentY, 75, currentY);
+            currentY += 4;
+            pdf.setFont('helvetica', 'bold');
+            pdf.text('TOTAL', 5, currentY);
+            pdf.text(formatRupiah(order.total), 75, currentY, { align: 'right' });
+            currentY += 4;
+            pdf.text('Metode Bayar:', 5, currentY);
+            pdf.text((order.payment_method || 'N/A').replace(/_/g, ' '), 75, currentY, { align: 'right' });
+
+            // --- Footer ---
+            currentY += 8;
+            pdf.setFontSize(7);
+            pdf.text('Terima kasih telah berbelanja!', 40, currentY, { align: 'center' });
+
+            // --- Simpan PDF ---
+            pdf.save(`Resi_Makanda_${order.id}.pdf`);
+        }
 
 
         // --- LOGIKA KELOLA PRODUK ---
