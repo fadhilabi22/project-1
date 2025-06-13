@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Menu Makanan - Toko Makanda</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <div class="logo-container">
+        <img src="img/makandalogo.png" alt="Makanda Logo" class="logo-img">
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Beranda</a></li>
+          <li><a href="menu.html" class="active">Menu</a></li>
+          <li><a href="tentangkami.html">Tentang Kami</a></li>
+          <li><a href="kontak.html">Kontak</a></li>
+          <li><a href="#" id="loginBtn">Login</a></li> <li><a href="history.html">Riwayat</a></li>
+          <li class="cart-icon" id="cartIcon">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span class="cart-count">0</span>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content"><h1>Menu Kami</h1><p>Nikmati berbagai pilihan makanan rumahan terbaik dari Toko Makanda</p></div>
+  </section>
+
+  <section class="products">
+    <h2 class="section-title">Semua Menu</h2>
+    <div class="filter-container">
+      <label for="filter">Filter Kategori:</label>
+      <select id="filter">
+        <option value="all">Semua</option>
+        <option value="makanan-utama">Makanan Utama</option>
+        <option value="camilan">Camilan</option>
+        <option value="minuman">Minuman</option>
+        <option value="kue-dessert">Kue & Dessert</option>
+      </select>
+    </div>
+
+    <div class="product-grid">
+      <div class="product-card" data-category="makanan-utama" id="bawangGorengCombinedCard" data-base-name="Bawang Goreng">
+        <div class="product-image" style="background-image: url('img/bawang.jpg');"></div>
+        <div class="product-content">
+          <div>
+            <h3 class="product-title">Bawang Goreng</h3>
+            <p class="product-description">Bawang Goreng premium, pilih rasa dan ukuran sesuai selera Anda.</p>
+            <label for="bawangFlavor" class="variant-label">Pilih Rasa:</label>
+            <select id="bawangFlavor" class="variant-selector">
+              <option value="Original" data-variant-part="Original">Original</option>
+              <option value="Spicy" data-variant-part="Spicy">Spicy</option>
+            </select>
+            <label for="bawangSize" class="variant-label">Pilih Ukuran:</label>
+            <select id="bawangSize" class="size-selector">
+              <option value="300ml" data-variant-part="(300ml)">Ukuran 300ml</option>
+              <option value="500ml" data-variant-part="(500ml)">Ukuran 500ml</option>
+            </select>
+            <p class="product-price">Rp0</p>
+            <p class="product-stock">Stok: <span class="stock-value">Pilih varian</span></p>
+          </div>
+          <div class="product-actions">
+            <div class="quantity-selector-card">
+              <button class="quantity-btn-card decrease-qty-card" type="button">&ndash;</button>
+              <input type="number" class="quantity-input-card" value="1" min="1">
+              <button class="quantity-btn-card increase-qty-card" type="button">+</button>
+            </div>
+            <button class="add-to-cart">Tambah ke Keranjang</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card" data-category="minuman" id="sagooMangooCombinedCard" data-base-name="Sagoo Mangoo">
+        <div class="product-image" style="background-image: url('product/mango.jpg');"></div>
+        <div class="product-content">
+          <div>
+            <h3 class="product-title">Sagoo Mangoo</h3>
+            <p class="product-description">Minuman mangga segar dengan sagu mutiara dan topping membuat tenggorokan segar.</p>
+            <label for="sagooSugar" class="variant-label">Pilihan Gula:</label>
+            <select id="sagooSugar" class="variant-selector">
+              <option value="Gula Normal" data-variant-part="Gula Normal">Normal</option>
+              <option value="Gula Less" data-variant-part="Gula Less">Less</option>
+            </select>
+            <label for="sagooSize" class="variant-label">Pilih Ukuran:</label>
+            <select id="sagooSize" class="size-selector">
+              <option value="Normal" data-variant-part="(Normal)">Normal</option>
+              <option value="Large" data-variant-part="(Large)">Large</option>
+            </select>
+            <p class="product-price">Rp0</p>
+            <p class="product-stock">Stok: <span class="stock-value">Pilih varian</span></p>
+          </div>
+          <div class="product-actions">
+            <div class="quantity-selector-card">
+              <button class="quantity-btn-card decrease-qty-card" type="button">&ndash;</button>
+              <input type="number" class="quantity-input-card" value="1" min="1">
+              <button class="quantity-btn-card increase-qty-card" type="button">+</button>
+            </div>
+            <button class="add-to-cart">Tambah ke Keranjang</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card" data-category="kue-dessert" id="stickyRiceCombinedCard" data-base-name="Mango Sticky Rice">
+        <div class="product-image" style="background-image: url('product/stickyrice.jpg');"></div>
+        <div class="product-content">
+          <div>
+            <h3 class="product-title">Mango Sticky Rice</h3>
+            <p class="product-description">Nikmati perpaduan sempurna antara ketan legit, mangga manis segar, dan saus santan gurih.</p>
+            <label for="stickyRiceSugar" class="variant-label">Pilihan Gula Saus:</label>
+            <select id="stickyRiceSugar" class="variant-selector">
+              <option value="Gula Normal" data-variant-part="Gula Normal">Saus Gula Normal</option>
+              <option value="Gula Less" data-variant-part="Gula Less">Saus Gula Less</option>
+            </select>
+            <label for="stickyRiceTopping" class="variant-label">Pilihan Topping:</label>
+            <select id="stickyRiceTopping" class="size-selector">
+              <option value="Mangga Klasik" data-variant-part="Mangga Klasik">Mangga Klasik</option>
+              <option value="Mangga Keju" data-variant-part="Mangga Keju">Mangga + Keju</option>
+            </select>
+            <p class="product-price">Rp0</p>
+            <p class="product-stock">Stok: <span class="stock-value">Pilih varian</span></p>
+          </div>
+          <div class="product-actions">
+            <div class="quantity-selector-card">
+              <button class="quantity-btn-card decrease-qty-card" type="button">&ndash;</button>
+              <input type="number" class="quantity-input-card" value="1" min="1">
+              <button class="quantity-btn-card increase-qty-card" type="button">+</button>
+            </div>
+            <button class="add-to-cart">Tambah ke Keranjang</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card" data-category="makanan-utama" id="ayamLadaCombinedCard" data-base-name="Ayam Lada Hitam">
+        <div class="product-image" style="background-image: url('product/chiken.jpg');"></div>
+        <div class="product-content">
+          <div>
+            <h3 class="product-title">Ayam Lada Hitam</h3>
+            <p class="product-description">Perpaduan sempurna antara daging ayam dengan lada hitam yang membangkitkan selera.</p>
+            <label for="ayamLadaFlavor" class="variant-label">Pilihan Rasa:</label>
+            <select id="ayamLadaFlavor" class="variant-selector">
+              <option value="Original" data-variant-part="Original">Original</option>
+              <option value="Spicy" data-variant-part="Spicy">Spicy</option>
+            </select>
+            <label for="ayamLadaPortion" class="variant-label">Pilihan Porsi:</label>
+            <select id="ayamLadaPortion" class="size-selector">
+              <option value="Regular" data-variant-part="(Regular)">Porsi Regular</option>
+              <option value="Jumbo" data-variant-part="(Jumbo)">Porsi Jumbo</option>
+            </select>
+            <p class="product-price">Rp0</p>
+            <p class="product-stock">Stok: <span class="stock-value">Pilih varian</span></p>
+          </div>
+          <div class="product-actions">
+            <div class="quantity-selector-card">
+              <button class="quantity-btn-card decrease-qty-card" type="button">&ndash;</button>
+              <input type="number" class="quantity-input-card" value="1" min="1">
+              <button class="quantity-btn-card increase-qty-card" type="button">+</button>
+            </div>
+            <button class="add-to-cart">Tambah ke Keranjang</button>
+          </div>
+         </div>
+      </div>
+      <div class="product-card" data-category="kue-dessert" id="bukoPandanCombinedCard" data-base-name="Buko Pandan">
+        <div class="product-image" style="background-image: url('product/bukopandan.jpg');"></div>
+        <div class="product-content">
+          <div>
+            <h3 class="product-title">Buko Pandan</h3>
+            <p class="product-description">Segar, manis, bikin nagih! Nikmati lembutnya kelapa dan harumnya pandan.</p>
+            <label for="bukoPandanSugar" class="variant-label">Pilihan Gula:</label>
+            <select id="bukoPandanSugar" class="variant-selector">
+              <option value="Gula Normal" data-variant-part="Gula Normal">Normal</option>
+              <option value="Gula Less" data-variant-part="Gula Less">Less</option>
+            </select>
+            <label for="bukoPandanSize" class="variant-label">Pilihan Ukuran:</label>
+            <select id="bukoPandanSize" class="size-selector">
+              <option value="Normal" data-variant-part="(Normal)">Normal</option>
+              <option value="Large" data-variant-part="(Large)">Large</option>
+            </select>
+            <p class="product-price">Rp0</p>
+            <p class="product-stock">Stok: <span class="stock-value">Pilih varian</span></p>
+          </div>
+          <div class="product-actions">
+            <div class="quantity-selector-card">
+              <button class="quantity-btn-card decrease-qty-card" type="button">&ndash;</button>
+              <input type="number" class="quantity-input-card" value="1" min="1">
+              <button class="quantity-btn-card increase-qty-card" type="button">+</button>
+            </div>
+            <button class="add-to-cart">Tambah ke Keranjang</button>
+          </div>
+         </div>
+      </div>
+      <div class="product-card" data-category="camilan" id="basoAciCombinedCard" data-base-name="Baso Aci">
+        <div class="product-image" style="background-image: url('product/basoaci.jpg');"></div>
+        <div class="product-content">
+          <div>
+            <h3 class="product-title">Baso Aci</h3>
+            <p class="product-description">Hangatnya Kuah, Kenyalnya Aci. Baso Aci Spesial Menghangatkan Harimu!</p>
+            <label for="basoAciFlavor" class="variant-label">Pilihan Rasa:</label>
+            <select id="basoAciFlavor" class="variant-selector">
+              <option value="Original" data-variant-part="Original">Original</option>
+              <option value="Spicy" data-variant-part="Spicy">Spicy</option>
+            </select>
+            <label for="basoAciPortion" class="variant-label">Pilihan Porsi:</label>
+            <select id="basoAciPortion" class="size-selector">
+              <option value="Regular" data-variant-part="(Regular)">Regular</option>
+              <option value="Jumbo" data-variant-part="(Jumbo)">Jumbo</option>
+            </select>
+            <p class="product-price">Rp0</p>
+            <p class="product-stock">Stok: <span class="stock-value">Pilih varian</span></p>
+          </div>
+          <div class="product-actions">
+            <div class="quantity-selector-card">
+              <button class="quantity-btn-card decrease-qty-card" type="button">&ndash;</button>
+              <input type="number" class="quantity-input-card" value="1" min="1">
+              <button class="quantity-btn-card increase-qty-card" type="button">+</button>
+            </div>
+            <button class="add-to-cart">Tambah ke Keranjang</button>
+          </div>
+         </div>
+      </div>
+      <div class="product-card" data-category="makanan-utama" id="rendangSuwirCombinedCard" data-base-name="Rendang Suwir">
+        <div class="product-image" style="background-image: url('product/rendang.jpg');"></div>
+        <div class="product-content">
+          <div>
+            <h3 class="product-title">Rendang Suwir</h3>
+            <p class="product-description">Rendang Suwir Kelezatan Rendang Meresap Hingga Suwiran Terakhir. Kamu harus cobain!</p>
+            <label for="rendangFlavor" class="variant-label">Pilihan Rasa:</label>
+            <select id="rendangFlavor" class="variant-selector">
+              <option value="Original" data-variant-part="Original">Original</option>
+              <option value="Pedas" data-variant-part="Pedas">Pedas</option>
+            </select>
+            <label for="rendangWeight" class="variant-label">Pilihan Berat:</label>
+            <select id="rendangWeight" class="size-selector">
+              <option value="250gr" data-variant-part="(250gr)">250gr</option>
+              <option value="500gr" data-variant-part="(500gr)">500gr</option>
+            </select>
+            <p class="product-price">Rp0</p>
+            <p class="product-stock">Stok: <span class="stock-value">Pilih varian</span></p>
+          </div>
+          <div class="product-actions">
+            <div class="quantity-selector-card">
+              <button class="quantity-btn-card decrease-qty-card" type="button">&ndash;</button>
+              <input type="number" class="quantity-input-card" value="1" min="1">
+              <button class="quantity-btn-card increase-qty-card" type="button">+</button>
+            </div>
+            <button class="add-to-cart">Tambah ke Keranjang</button>
+          </div>
+         </div>
+      </div>
+      <div class="product-card" data-category="camilan" id="sambalCumiCombinedCard" data-base-name="Sambal Cumi">
+        <div class="product-image" style="background-image: url('product/sambalcumi.jpg');"></div>
+        <div class="product-content">
+          <div>
+            <h3 class="product-title">Sambal Cumi</h3>
+            <p class="product-description"> Lebih dari Sekadar Pelengkap, Ini adalah Rasa yang Membawa Kelezatan  ke Meja Makan Anda.</p>
+            <label for="sambalCumiFlavor" class="variant-label">Pilihan Pedas:</label>
+            <select id="sambalCumiFlavor" class="variant-selector">
+              <option value="Pedas" data-variant-part="Pedas">Pedas</option>
+              <option value="Super Pedas" data-variant-part="Super Pedas">Super Pedas</option>
+            </select>
+            <label for="sambalCumiSize" class="variant-label">Pilihan Ukuran:</label>
+            <select id="sambalCumiSize" class="size-selector">
+              <option value="Botol Kecil" data-variant-part="(Botol Kecil)">Botol Kecil</option>
+              <option value="Botol Besar" data-variant-part="(Botol Besar)">Botol Besar</option>
+            </select>
+            <p class="product-price">Rp0</p>
+            <p class="product-stock">Stok: <span class="stock-value">Pilih varian</span></p>
+          </div>
+          <div class="product-actions">
+            <div class="quantity-selector-card">
+              <button class="quantity-btn-card decrease-qty-card" type="button">&ndash;</button>
+              <input type="number" class="quantity-input-card" value="1" min="1">
+              <button class="quantity-btn-card increase-qty-card" type="button">+</button>
+            </div>
+            <button class="add-to-cart">Tambah ke Keranjang</button>
+          </div>
+         </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cart-popup" id="cartPopup" role="dialog" aria-modal="true" aria-labelledby="cartPopupTitle">
+    <button class="close-btn" id="closePopup" aria-label="Tutup">&times;</button>
+    <h3 id="cartPopupTitle">Keranjang Belanja</h3>
+    <ul id="cartItemsList"></ul> <p class="total" id="cartTotal">Total: Rp0</p>
+    <button id="checkoutBtn" class="confirm-btn" style="width:100%; padding:12px;" disabled>Lanjutkan ke Pembayaran</button>
+  </div>
+
+  <div id="shippingAddressPage" class="overlay-page">
+    <div class="overlay-content">
+      <h2>Alamat Pengiriman</h2>
+      <form id="shippingAddressForm" class="address-form-container" novalidate>
+        <div class="form-group">
+          <label for="shippingName">Nama Penerima <span class="required-asterisk">*</span></label>
+          <input type="text" id="shippingName" name="shippingName" required>
+          <div class="form-error" id="errorShippingName"></div>
+        </div>
+        <div class="form-group">
+          <label for="shippingPhone">Nomor Telepon Penerima <span class="required-asterisk">*</span></label>
+          <input type="tel" id="shippingPhone" name="shippingPhone" required placeholder="Contoh: 08123456789">
+          <div class="form-error" id="errorShippingPhone"></div>
+        </div>
+        <div class="form-group">
+          <label for="shippingAddress1">Alamat Lengkap (Jalan, Nomor Rumah, RT/RW) <span class="required-asterisk">*</span></label>
+          <textarea id="shippingAddress1" name="shippingAddress1" required></textarea>
+          <div class="form-error" id="errorShippingAddress1"></div>
+        </div>
+        <div class="form-group">
+          <label for="shippingAddress2">Detail Alamat Tambahan (Opsional)</label>
+          <input type="text" id="shippingAddress2" name="shippingAddress2" placeholder="Contoh: Patokan dekat Masjid Al-Hidayah">
+        </div>
+        <div class="form-group">
+            <label for="shippingDistrict">Kecamatan <span class="required-asterisk">*</span></label>
+            <input type="text" id="shippingDistrict" name="shippingDistrict" required>
+            <div class="form-error" id="errorShippingDistrict"></div>
+        </div>
+        <div class="form-group">
+          <label for="shippingCity">Kota <span class="required-asterisk">*</span></label>
+          <input type="text" id="shippingCity" name="shippingCity" required>
+          <div class="form-error" id="errorShippingCity"></div>
+        </div>
+        <div class="form-group">
+          <label for="shippingPostalCode">Kode Pos <span class="required-asterisk">*</span></label>
+          <input type="text" id="shippingPostalCode" name="shippingPostalCode" required pattern="\d{5}" title="Kode pos harus 5 digit angka">
+          <div class="form-error" id="errorShippingPostalCode"></div>
+        </div>
+        <div class="form-group">
+          <label for="shippingNotes">Catatan untuk Pengiriman (Opsional)</label>
+          <textarea id="shippingNotes" name="shippingNotes" placeholder="Contoh: Titip di pos satpam jika tidak ada orang"></textarea>
+        </div>
+      </form>
+      <div class="overlay-actions">
+        <button id="cancelShippingBtn" class="cancel-btn">Batal</button>
+        <button id="confirmShippingBtn" class="confirm-btn">Lanjut ke Metode Pembayaran</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="paymentMethodSelectionPage" class="overlay-page">
+    <div class="overlay-content">
+      <h2>Pilih Metode Pembayaran</h2>
+      <div class="order-summary-preview">
+          <h3>Ringkasan Pesanan</h3>
+          <ul id="paymentOrderItemsPreview"></ul>
+          <div class="order-summary-total">
+            <span>Total Pembayaran:</span>
+            <span id="paymentOrderTotalPreview">Rp0</span>
+          </div>
+      </div>
+      <h3>Metode Tersedia:</h3>
+      <div class="payment-methods">
+        <div class="method" data-method="bca_va" data-method-name="Transfer Bank BCA (Virtual Account)">
+            <i class="fas fa-university"></i> Transfer Bank BCA (VA)
+        </div>
+        <div class="method" data-method="mandiri_va" data-method-name="Transfer Bank Mandiri (Virtual Account)">
+            <i class="fas fa-university"></i> Transfer Bank Mandiri (VA)
+        </div>
+        <div class="method" data-method="credit_card" data-method-name="Kartu Kredit/Debit (Simulasi)">
+            <i class="fas fa-credit-card"></i> Kartu Kredit/Debit
+        </div>
+      </div>
+      <div class="overlay-actions">
+        <button id="backToShippingBtn" class="cancel-btn">Kembali ke Alamat</button>
+        <button id="confirmPaymentMethodBtn" class="confirm-btn">Konfirmasi & Proses Order</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="paymentStatusPage" class="overlay-page">
+    <div class="overlay-content">
+      <h2 id="paymentStatusTitle">Status Pembayaran Anda</h2>
+      <p><strong>Order ID:</strong> <span id="statusOrderId">---</span></p>
+      <p><strong>Email Pembeli:</strong> <span id="statusUserEmail">---</span></p>
+      <p><strong>Metode Pembayaran:</strong> <span id="statusPaymentMethod">---</span></p>
+      <p><strong>Alamat Pengiriman:</strong></p> <div id="statusShippingAddress" style="margin-left: 15px; margin-bottom: 10px; font-size: 0.9em;"></div>
+
+      <h3>Rincian Pesanan:</h3>
+      <ul id="statusOrderItems"></ul>
+      <div id="statusOrderTotalContainer">
+          <span>Total Tagihan:</span>
+          <span id="statusOrderTotal">Rp0</span>
+      </div>
+
+      <div id="paymentInstructions"></div>
+
+      <p style="text-align:center; margin-top:20px;"><strong>Status Saat Ini:</strong> <span id="currentOrderStatus" class="status-highlight">Memuat...</span></p>
+      <p id="statusMessage">Harap tunggu atau selesaikan pembayaran Anda.</p>
+
+      <div class="overlay-actions">
+        <button id="refreshStatusBtn" class="refresh-btn">Refresh Status</button>
+        <button id="backToMenuBtn" class="back-btn">Kembali ke Menu</button>
+        <button id="goToHistoryBtn" class="back-btn">Lihat Riwayat</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-column">
+        <h3>Toko Makanda</h3>
+        <p>Menyajikan makanan rumahan berkualitas dengan cita rasa yang otentik.</p>
+        <div class="social-icons">
+          <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-tiktok"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="footer-column"><h3>Menu</h3><ul><li><a href="#">Makanan Utama</a></li><li><a href="#">Camilan</a></li><li><a href="#">Minuman</a></li><li><a href="#">Kue & Dessert</a></li></ul></div>
+      <div class="footer-column"><h3>Informasi</h3><ul><li><a href="tentangkami.html">Tentang Kami</a></li><li><a href="#">Cara Pemesanan</a></li><li><a href="#">Kebijakan Privasi</a></li></ul></div>
+      <div class="footer-column"><h3>Kontak</h3><ul><li><i class="fas fa-phone"></i> +62 857-1046-5321</li><li><i class="fas fa-envelope"></i> info@tokomakanda.id</li><li><i class="fas fa-map-marker-alt"></i> Jl. Al-furqon No. 15113, Kota Tangerang</li></ul></div>
+    </div>
+    <div class="copyright">© 2025 Toko Makanda</div>
+  </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // --- UTILITAS ---
+    function validateEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(String(email).toLowerCase());
+    }
+
+    function formatRupiah(angka) {
+        if (isNaN(parseInt(angka))) return 'Rp0';
+        return 'Rp' + parseInt(angka).toLocaleString('id-ID');
+    }
+
+    function parseRupiah(rupiahStr) {
+        if (typeof rupiahStr === 'number') return rupiahStr;
+        return parseInt(String(rupiahStr).replace(/[Rp.,]/g, '')) || 0;
+    }
+
+    // --- ELEMEN DOM ---
+    const filterSelect = document.getElementById('filter');
+    const cartCountSpan = document.querySelector('.cart-count');
+    const cartIcon = document.getElementById('cartIcon');
+    const cartPopup = document.getElementById('cartPopup');
+    const closePopupBtn = document.getElementById('closePopup');
+    const cartItemsListEl = document.getElementById('cartItemsList');
+    const cartTotalEl = document.getElementById('cartTotal');
+    const checkoutBtn = document.getElementById('checkoutBtn');
+
+    // Elemen Produk (Contoh, pastikan semua dideklarasikan jika digunakan)
+    const bawangCard = document.getElementById('bawangGorengCombinedCard');
+    const bawangFlavorSelector = bawangCard?.querySelector('#bawangFlavor');
+    const bawangSizeSelector = bawangCard?.querySelector('#bawangSize');
+    const bawangPriceElement = bawangCard?.querySelector('.product-price');
+    const bawangStockElement = bawangCard?.querySelector('.product-stock .stock-value');
+    const bawangAddToCartButton = bawangCard?.querySelector('.add-to-cart');
+
+    const sagooCard = document.getElementById('sagooMangooCombinedCard');
+    const sagooSugarSelector = sagooCard?.querySelector('#sagooSugar');
+    const sagooSizeSelector = sagooCard?.querySelector('#sagooSize');
+    const sagooPriceElement = sagooCard?.querySelector('.product-price');
+    const sagooStockElement = sagooCard?.querySelector('.product-stock .stock-value');
+    const sagooAddToCartButton = sagooCard?.querySelector('.add-to-cart');
+
+    const stickyRiceCard = document.getElementById('stickyRiceCombinedCard');
+    const stickyRiceSugarSelector = stickyRiceCard?.querySelector('#stickyRiceSugar');
+    const stickyRiceToppingSelector = stickyRiceCard?.querySelector('#stickyRiceTopping');
+    const stickyRicePriceElement = stickyRiceCard?.querySelector('.product-price');
+    const stickyRiceStockElement = stickyRiceCard?.querySelector('.product-stock .stock-value');
+    const stickyRiceAddToCartButton = stickyRiceCard?.querySelector('.add-to-cart');
+
+    const ayamLadaCard = document.getElementById('ayamLadaCombinedCard');
+    const ayamLadaFlavorSelector = ayamLadaCard?.querySelector('#ayamLadaFlavor');
+    const ayamLadaPortionSelector = ayamLadaCard?.querySelector('#ayamLadaPortion');
+    const ayamLadaPriceElement = ayamLadaCard?.querySelector('.product-price');
+    const ayamLadaStockElement = ayamLadaCard?.querySelector('.product-stock .stock-value');
+    const ayamLadaAddToCartButton = ayamLadaCard?.querySelector('.add-to-cart');
+
+    const bukoPandanCard = document.getElementById('bukoPandanCombinedCard');
+    const bukoPandanSugarSelector = bukoPandanCard?.querySelector('#bukoPandanSugar');
+    const bukoPandanSizeSelector = bukoPandanCard?.querySelector('#bukoPandanSize');
+    const bukoPandanPriceElement = bukoPandanCard?.querySelector('.product-price');
+    const bukoPandanStockElement = bukoPandanCard?.querySelector('.product-stock .stock-value');
+    const bukoPandanAddToCartButton = bukoPandanCard?.querySelector('.add-to-cart');
+
+    const basoAciCard = document.getElementById('basoAciCombinedCard');
+    const basoAciFlavorSelector = basoAciCard?.querySelector('#basoAciFlavor');
+    const basoAciPortionSelector = basoAciCard?.querySelector('#basoAciPortion');
+    const basoAciPriceElement = basoAciCard?.querySelector('.product-price');
+    const basoAciStockElement = basoAciCard?.querySelector('.product-stock .stock-value');
+    const basoAciAddToCartButton = basoAciCard?.querySelector('.add-to-cart');
+
+    const rendangSuwirCard = document.getElementById('rendangSuwirCombinedCard');
+    const rendangFlavorSelector = rendangSuwirCard?.querySelector('#rendangFlavor');
+    const rendangWeightSelector = rendangSuwirCard?.querySelector('#rendangWeight');
+    const rendangPriceElement = rendangSuwirCard?.querySelector('.product-price');
+    const rendangStockElement = rendangSuwirCard?.querySelector('.product-stock .stock-value');
+    const rendangAddToCartButton = rendangSuwirCard?.querySelector('.add-to-cart');
+    
+    const sambalCumiCard = document.getElementById('sambalCumiCombinedCard');
+    const sambalCumiFlavorSelector = sambalCumiCard?.querySelector('#sambalCumiFlavor');
+    const sambalCumiSizeSelector = sambalCumiCard?.querySelector('#sambalCumiSize');
+    const sambalCumiPriceElement = sambalCumiCard?.querySelector('.product-price');
+    const sambalCumiStockElement = sambalCumiCard?.querySelector('.product-stock .stock-value');
+    const sambalCumiAddToCartButton = sambalCumiCard?.querySelector('.add-to-cart');
+
+    // Elemen Halaman Alamat
+    const shippingAddressPage = document.getElementById('shippingAddressPage');
+    const shippingAddressForm = document.getElementById('shippingAddressForm');
+    const cancelShippingBtn = document.getElementById('cancelShippingBtn');
+    const confirmShippingBtn = document.getElementById('confirmShippingBtn');
+
+    // Elemen Halaman Metode Pembayaran
+    const paymentMethodSelectionPage = document.getElementById('paymentMethodSelectionPage');
+    const paymentOrderItemsPreviewEl = document.getElementById('paymentOrderItemsPreview');
+    const paymentOrderTotalPreviewEl = document.getElementById('paymentOrderTotalPreview');
+    const paymentMethodsContainer = paymentMethodSelectionPage.querySelector('.payment-methods');
+    const backToShippingBtn = document.getElementById('backToShippingBtn'); // Tombol baru
+    const confirmPaymentMethodBtn = document.getElementById('confirmPaymentMethodBtn');
+
+    // Elemen Halaman Status Pembayaran
+    const paymentStatusPage = document.getElementById('paymentStatusPage');
+    const statusOrderIdEl = document.getElementById('statusOrderId');
+    const statusUserEmailEl = document.getElementById('statusUserEmail');
+    const statusPaymentMethodEl = document.getElementById('statusPaymentMethod');
+    const statusShippingAddressEl = document.getElementById('statusShippingAddress'); // Untuk menampilkan alamat
+    const statusOrderItemsEl = document.getElementById('statusOrderItems');
+    const statusOrderTotalEl = document.getElementById('statusOrderTotal');
+    const paymentInstructionsEl = document.getElementById('paymentInstructions');
+    const currentOrderStatusEl = document.getElementById('currentOrderStatus');
+    const statusMessageEl = document.getElementById('statusMessage');
+    const refreshStatusBtn = document.getElementById('refreshStatusBtn');
+    const backToMenuBtn = document.getElementById('backToMenuBtn');
+    const goToHistoryBtn = document.getElementById('goToHistoryBtn');
+
+    // --- STATE APLIKASI ---
+    let rawCartItems = JSON.parse(localStorage.getItem('makandaCartItems')) || [];
+    let cartItems = rawCartItems.filter(item => typeof item.quantity === 'number' && item.quantity > 0 && typeof item.price === 'number' && typeof item.name === 'string');
+    
+    let collectedShippingAddress = null; 
+    let selectedPaymentMethod = null;
+    let selectedPaymentMethodName = "";
+    let currentActiveOrderId = null;
+    let allProductsData = [];
+
+    // --- FUNGSI UPDATE DETAIL PRODUK VARIAN (Generik) ---
+    function updateVariantProductDetails(cardElement, baseName, selector1, selector2, priceElement, stockElement, addToCartButton) {
+        if (!cardElement || !selector1 || !priceElement || !stockElement || !addToCartButton) {
+             return;
+        }
+        const quantityInputCard = cardElement.querySelector('.quantity-input-card');
+        const val1 = selector1.options[selector1.selectedIndex].dataset.variantPart || selector1.value;
+        let val2 = "";
+        if (selector2) { 
+            val2 = selector2.options[selector2.selectedIndex].dataset.variantPart || selector2.value;
+        }
+        const variantProductName = `${baseName} ${val1}${val2 ? ` ${val2}` : ''}`.trim(); 
+        const productInfo = allProductsData.find(p => p.name === variantProductName);
+
+        if (productInfo) {
+            priceElement.textContent = formatRupiah(productInfo.price);
+            const currentCartItem = cartItems.find(item => item.name === variantProductName);
+            const quantityInCart = currentCartItem ? currentCartItem.quantity : 0;
+            const actualStockAvailableForNewAdd = productInfo.stock - quantityInCart;
+
+            if (productInfo.product_status === 'habis' || productInfo.stock <= 0) {
+                stockElement.textContent = 'Habis';
+                stockElement.className = 'stock-value stock-value-habis';
+                addToCartButton.disabled = true;
+                addToCartButton.textContent = 'Stok Habis';
+                if (quantityInputCard) quantityInputCard.max = 0;
+            } else if (actualStockAvailableForNewAdd <= 0) {
+                stockElement.textContent = `Sisa ${productInfo.stock} (di keranjang: ${quantityInCart})`;
+                stockElement.className = 'stock-value stock-value-habis';
+                addToCartButton.disabled = true;
+                addToCartButton.textContent = 'Stok Kurang';
+                 if (quantityInputCard) quantityInputCard.max = 0;
+            } else {
+                stockElement.textContent = productInfo.stock; 
+                stockElement.className = 'stock-value stock-value-tersedia';
+                addToCartButton.disabled = false;
+                addToCartButton.textContent = 'Tambah ke Keranjang';
+                if (quantityInputCard) quantityInputCard.max = actualStockAvailableForNewAdd;
+            }
+        } else {
+            priceElement.textContent = 'Harga tidak tersedia';
+            stockElement.textContent = 'N/A';
+            stockElement.className = 'stock-value';
+            addToCartButton.disabled = true;
+            addToCartButton.textContent = 'Varian Tidak Tersedia';
+            if (quantityInputCard) quantityInputCard.max = 0;
+        }
+    }
+    
+    function updateBawangGorengDetails() { if (bawangCard) updateVariantProductDetails(bawangCard, bawangCard.dataset.baseName, bawangFlavorSelector, bawangSizeSelector, bawangPriceElement, bawangStockElement, bawangAddToCartButton); }
+    function updateSagooMangooDetails() { if (sagooCard) updateVariantProductDetails(sagooCard, sagooCard.dataset.baseName, sagooSugarSelector, sagooSizeSelector, sagooPriceElement, sagooStockElement, sagooAddToCartButton); }
+    function updateStickyRiceDetails() { if (stickyRiceCard) updateVariantProductDetails(stickyRiceCard, stickyRiceCard.dataset.baseName, stickyRiceSugarSelector, stickyRiceToppingSelector, stickyRicePriceElement, stickyRiceStockElement, stickyRiceAddToCartButton); }
+    function updateAyamLadaDetails() { if (ayamLadaCard) updateVariantProductDetails(ayamLadaCard, ayamLadaCard.dataset.baseName, ayamLadaFlavorSelector, ayamLadaPortionSelector, ayamLadaPriceElement, ayamLadaStockElement, ayamLadaAddToCartButton); }
+    function updateBukoPandanDetails() { if (bukoPandanCard) updateVariantProductDetails(bukoPandanCard, bukoPandanCard.dataset.baseName, bukoPandanSugarSelector, bukoPandanSizeSelector, bukoPandanPriceElement, bukoPandanStockElement, bukoPandanAddToCartButton); }
+    function updateBasoAciDetails() { if (basoAciCard) updateVariantProductDetails(basoAciCard, basoAciCard.dataset.baseName, basoAciFlavorSelector, basoAciPortionSelector, basoAciPriceElement, basoAciStockElement, basoAciAddToCartButton); }
+    function updateRendangSuwirDetails() { if (rendangSuwirCard) updateVariantProductDetails(rendangSuwirCard, rendangSuwirCard.dataset.baseName, rendangFlavorSelector, rendangWeightSelector, rendangPriceElement, rendangStockElement, rendangAddToCartButton); }
+    function updateSambalCumiDetails() { if (sambalCumiCard) updateVariantProductDetails(sambalCumiCard, sambalCumiCard.dataset.baseName, sambalCumiFlavorSelector, sambalCumiSizeSelector, sambalCumiPriceElement, sambalCumiStockElement, sambalCumiAddToCartButton); }
+
+    // --- FUNGSI KERANJANG ---
+    function updateCartDisplay() {
+        cartItemsListEl.innerHTML = '';
+        let totalOverall = 0;
+        let totalQuantityOverall = 0;
+
+        if (cartItems.length === 0) {
+            cartItemsListEl.innerHTML = '<li>Keranjang masih kosong.</li>';
+        } else {
+            cartItems.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.style.display = 'flex'; li.style.justifyContent = 'space-between'; li.style.alignItems = 'center';
+                li.style.padding = '8px 0'; li.style.borderBottom = '1px solid #eee'; 
+                const itemTotalPrice = item.price * item.quantity;
+                totalOverall += itemTotalPrice; totalQuantityOverall += item.quantity;
+                li.innerHTML = `
+                    <div style="flex-grow: 1; margin-right: 10px;">
+                        <span style="font-weight: 500;">${item.name}</span><br>
+                        <small>${formatRupiah(item.price)} x ${item.quantity} = ${formatRupiah(itemTotalPrice)}</small>
+                    </div>
+                    <div style="display: flex; align-items: center; white-space: nowrap;">
+                        <button class="quantity-btn decrease-quantity" data-index="${index}" style="margin-right: 8px; padding: 4px 8px; cursor:pointer; border: 1px solid #ccc; background-color: #f8f8f8;">-</button>
+                        <span style="margin-right: 8px; min-width: 20px; text-align: center;">${item.quantity}</span>
+                        <button class="quantity-btn increase-quantity" data-index="${index}" style="margin-right: 15px; padding: 4px 8px; cursor:pointer; border: 1px solid #ccc; background-color: #f8f8f8;">+</button>
+                        <button class="remove-item-btn" data-index="${index}" title="Hapus semua item ini" style="background:none;border:none;color:red;cursor:pointer;font-size:1.2em;">&times;</button>
+                    </div>`;
+                cartItemsListEl.appendChild(li);
+            });
+        }
+        cartTotalEl.textContent = 'Total: ' + formatRupiah(totalOverall);
+        cartCountSpan.textContent = totalQuantityOverall; 
+        localStorage.setItem('makandaCartItems', JSON.stringify(cartItems));
+        checkoutBtn.disabled = cartItems.length === 0;
+    }
+
+    function addToCart(name, priceStr, quantityToAdd = 1) {
+        const price = parseRupiah(priceStr);
+        const existingItemIndex = cartItems.findIndex(item => item.name === name);
+        const productInfo = allProductsData.find(p => p.name === name);
+        let stockAvailable = productInfo ? productInfo.stock : Infinity; 
+        
+        if (existingItemIndex > -1) {
+            const newQuantity = cartItems[existingItemIndex].quantity + quantityToAdd;
+            if (newQuantity <= stockAvailable) {
+                cartItems[existingItemIndex].quantity = newQuantity;
+            } else {
+                alert(`Stok untuk ${name} tidak mencukupi. Sisa stok: ${stockAvailable}. Anda sudah memiliki ${cartItems[existingItemIndex].quantity} di keranjang.`);
+                return false; 
+            }
+        } else {
+            if (quantityToAdd <= stockAvailable) {
+                cartItems.push({ name, price, quantity: quantityToAdd });
+            } else {
+                alert(`Stok untuk ${name} tidak mencukupi. Maksimal pembelian ${stockAvailable} item.`);
+                return false; 
+            }
+        }
+        updateCartDisplay(); return true; 
+    }
+
+    cartItemsListEl.addEventListener('click', (e) => {
+        const target = e.target;
+        if (!target.dataset.index) return; 
+        const index = parseInt(target.dataset.index);
+        if (isNaN(index) || index < 0 || index >= cartItems.length) return; 
+        const item = cartItems[index]; 
+        if (target.classList.contains('remove-item-btn')) { cartItems.splice(index, 1); } 
+        else if (target.classList.contains('decrease-quantity')) {
+            if (item.quantity > 1) { item.quantity--; } else { cartItems.splice(index, 1); }
+        } else if (target.classList.contains('increase-quantity')) {
+            const productInfo = allProductsData.find(p => p.name === item.name);
+            let stockAvailable = productInfo ? productInfo.stock : Infinity;
+            if (item.quantity < stockAvailable) { item.quantity++; } 
+            else { alert(`Stok untuk ${item.name} tidak mencukupi. Maksimal pembelian ${stockAvailable} item.`); }
+        }
+        updateCartDisplay(); fetchAndDisplayProductAvailability(); 
+    });
+    
+    // --- FUNGSI VALIDASI FORM ALAMAT ---
+    function validateShippingForm() {
+        let isValid = true;
+        const fields = [
+            { id: 'shippingName', errorId: 'errorShippingName', message: 'Nama penerima wajib diisi.' },
+            { id: 'shippingPhone', errorId: 'errorShippingPhone', message: 'Nomor telepon wajib diisi.', pattern: /^(08|\+628)\d{8,13}$/, patternMessage: 'Format nomor telepon tidak valid (Contoh: 08123456789 atau +628123456789).' },
+            { id: 'shippingAddress1', errorId: 'errorShippingAddress1', message: 'Alamat lengkap wajib diisi.' },
+            { id: 'shippingDistrict', errorId: 'errorShippingDistrict', message: 'Kecamatan wajib diisi.' },
+            { id: 'shippingCity', errorId: 'errorShippingCity', message: 'Kota wajib diisi.' },
+            { id: 'shippingPostalCode', errorId: 'errorShippingPostalCode', message: 'Kode pos wajib diisi.', pattern: /^\d{5}$/, patternMessage: 'Kode pos harus 5 digit angka.' }
+        ];
+
+        fields.forEach(field => {
+            const inputElement = document.getElementById(field.id);
+            const errorElement = document.getElementById(field.errorId);
+            errorElement.textContent = ''; 
+
+            if (!inputElement.value.trim()) {
+                errorElement.textContent = field.message;
+                isValid = false;
+            } else if (field.pattern && !field.pattern.test(inputElement.value.trim())) {
+                errorElement.textContent = field.patternMessage;
+                isValid = false;
+            }
+        });
+        return isValid;
+    }
+
+    // --- EVENT LISTENERS & ALUR CHECKOUT ---
+    if (checkoutBtn) {
+        checkoutBtn.addEventListener('click', () => {
+            if (cartItems.length === 0) { alert('Keranjang belanja Anda masih kosong!'); return; }
+            const userEmail = sessionStorage.getItem('userEmail'); 
+            if (!userEmail) { alert('Anda belum login. Silakan login terlebih dahulu.'); return; }
+            if (!validateEmail(userEmail)) { alert('Format email tidak valid. Mohon login ulang.'); return; }
+
+            cartPopup.classList.remove('show');
+            shippingAddressPage.style.display = 'block';
+            document.body.style.overflow = 'hidden'; 
+        });
+    }
+
+    if (cancelShippingBtn) {
+        cancelShippingBtn.addEventListener('click', () => {
+            shippingAddressPage.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            // shippingAddressForm.reset(); // Opsional
+        });
+    }
+
+    if (confirmShippingBtn) {
+        confirmShippingBtn.addEventListener('click', () => {
+            if (validateShippingForm()) {
+                collectedShippingAddress = {
+                    name: document.getElementById('shippingName').value.trim(),
+                    phone: document.getElementById('shippingPhone').value.trim(),
+                    addressLine1: document.getElementById('shippingAddress1').value.trim(),
+                    addressLine2: document.getElementById('shippingAddress2').value.trim(),
+                    district: document.getElementById('shippingDistrict').value.trim(),
+                    city: document.getElementById('shippingCity').value.trim(),
+                    postalCode: document.getElementById('shippingPostalCode').value.trim(),
+                    notes: document.getElementById('shippingNotes').value.trim()
+                };
+                shippingAddressPage.style.display = 'none';
+                paymentMethodSelectionPage.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+
+                paymentOrderItemsPreviewEl.innerHTML = '';
+                let currentTotal = 0;
+                cartItems.forEach(item => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<span class="item-name">${item.name} (x${item.quantity})</span><span class="item-price">${formatRupiah(item.price * item.quantity)}</span>`;
+                    paymentOrderItemsPreviewEl.appendChild(li);
+                    currentTotal += (item.price * item.quantity);
+                });
+                paymentOrderTotalPreviewEl.textContent = formatRupiah(currentTotal);
+            }
+        });
+    }
+    
+    if (backToShippingBtn) {
+        backToShippingBtn.addEventListener('click', () => {
+            paymentMethodSelectionPage.style.display = 'none';
+            shippingAddressPage.style.display = 'block';
+        });
+    }
+    
+    // Untuk tombol cancel di payment method selection, kita jadikan sbg backToShipping juga atau hapus
+    // Jika sebelumnya ada cancelPaymentSelectionBtn, ganti dengan backToShippingBtn atau sesuaikan fungsinya.
+    // Anggap cancelPaymentSelectionBtn sudah digantikan oleh backToShippingBtn atau tidak ada.
+
+    if (confirmPaymentMethodBtn) {
+        confirmPaymentMethodBtn.addEventListener('click', async () => {
+            if (!selectedPaymentMethod) { alert("Silakan pilih metode pembayaran terlebih dahulu!"); return; }
+            if (!collectedShippingAddress) { 
+                alert("Data alamat pengiriman belum lengkap. Silakan kembali dan isi alamat.");
+                paymentMethodSelectionPage.style.display = 'none';
+                shippingAddressPage.style.display = 'block';
+                return;
+            }
+            const userEmail = sessionStorage.getItem('userEmail'); 
+            const orderPayload = {
+                email: userEmail,
+                items: cartItems.map(item => ({ name: item.name, price: item.price, quantity: item.quantity })), 
+                total: cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0),
+                paymentMethod: selectedPaymentMethod,
+                shippingDetails: collectedShippingAddress 
+            };
+            confirmPaymentMethodBtn.disabled = true; confirmPaymentMethodBtn.textContent = 'Memproses...';
+            try {
+            const response = await fetch('/api/order/submit', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(orderPayload)
+            });
+            const result = await response.json();
+            if (!response.ok) { throw new Error(result.message || `Gagal membuat order. Status: ${response.status}`); }
+
+            // ===== PERUBAHAN UTAMA DIMULAI DI SINI =====
+
+            // 1. Alih-alih langsung memanggil openPaymentStatusPage dengan 'result' yang tidak lengkap,
+            //    kita akan menggunakan 'orderId' dari result untuk mengambil data yang lengkap dan terjamin.
+            currentActiveOrderId = result.orderId; // Simpan Order ID yang baru dibuat
+
+            // 2. Panggil fungsi yang sudah ada untuk mengambil detail lengkap dari server
+            //    dan mengisi halaman status secara otomatis.
+            await fetchAndUpdateCurrentOrderStatus(); 
+
+            // 3. Tampilkan halaman status yang datanya sudah diisi oleh fungsi di atas.
+            if (cartPopup.classList.contains('show')) cartPopup.classList.remove('show');
+            if (shippingAddressPage.style.display === 'block') shippingAddressPage.style.display = 'none';
+            if (paymentMethodSelectionPage.style.display === 'block') paymentMethodSelectionPage.style.display = 'none';
+            paymentStatusPage.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            paymentStatusPage.scrollTop = 0;
+            
+            // ===== PERUBAHAN UTAMA SELESAI =====
+
+            // 4. Kosongkan keranjang dan reset semua state setelah semuanya berhasil.
+            cartItems = []; updateCartDisplay(); fetchAndDisplayProductAvailability(); 
+            selectedPaymentMethod = null; selectedPaymentMethodName = "";
+            collectedShippingAddress = null; 
+            if (shippingAddressForm) shippingAddressForm.reset();
+            paymentMethodsContainer.querySelectorAll('.method').forEach(m => m.classList.remove('selected'));
+            
+        } catch (error) {
+            console.error("Error saat submit order:", error);
+            alert(`Terjadi kesalahan saat membuat pesanan: ${error.message}`);
+        } finally {
+            confirmPaymentMethodBtn.disabled = false; confirmPaymentMethodBtn.textContent = 'Konfirmasi & Proses Order';
+        }
+        });
+    }
+
+    // --- FUNGSI HALAMAN STATUS & PEMBAYARAN ---
+    function getPaymentInstructionsText(methodKey, orderId, totalAmount) {
+        const vaNumber = `TOKOMAKANDA${orderId}${String(Date.now()).slice(-4)}`;
+        const formattedTotal = formatRupiah(totalAmount);
+        switch(methodKey) {
+            case 'bca_va': return `Silakan transfer sejumlah <strong>${formattedTotal}</strong> ke BCA Virtual Account: <strong>${vaNumber}</strong> atas nama Toko Makanda. Pembayaran akan diverifikasi otomatis.`;
+            case 'mandiri_va': return `Silakan transfer sejumlah <strong>${formattedTotal}</strong> ke Mandiri Virtual Account: <strong>${vaNumber}</strong> atas nama Toko Makanda. Pembayaran akan diverifikasi otomatis.`;
+            case 'credit_card': return `Ini adalah simulasi pembayaran dengan Kartu Kredit/Debit. Tidak ada tagihan nyata. Order Anda telah dicatat dengan total <strong>${formattedTotal}</strong>.`;
+            default: return "Instruksi pembayaran spesifik akan diberikan. Harap tunggu konfirmasi lebih lanjut.";
+        }
+    }
+
+    function displayOrderStatus(statusText) {
+        if (!currentOrderStatusEl || !statusMessageEl || !paymentInstructionsEl) return;
+        currentOrderStatusEl.textContent = statusText;
+        currentOrderStatusEl.className = 'status-highlight'; 
+        const lowerStatus = statusText.toLowerCase();
+        if (lowerStatus.includes('menunggu pembayaran') || lowerStatus.includes('pending')) {
+            currentOrderStatusEl.classList.add('status-menunggu');
+            statusMessageEl.textContent = "Harap selesaikan pembayaran Anda. Refresh status setelah melakukan pembayaran.";
+            if (refreshStatusBtn) refreshStatusBtn.style.display = 'block';
+        } else if (lowerStatus.includes('pembayaran dikonfirmasi') || lowerStatus.includes('selesai') || lowerStatus.includes('paid')) {
+            currentOrderStatusEl.classList.add('status-dikonfirmasi');
+            statusMessageEl.textContent = "Pembayaran Anda telah dikonfirmasi! Pesanan akan segera diproses.";
+            paymentInstructionsEl.innerHTML = "<p>Terima kasih! Pembayaran Anda sudah kami terima.</p>";
+            if (refreshStatusBtn) refreshStatusBtn.style.display = 'none';
+        } else if (lowerStatus.includes('pesanan diproses')) {
+            currentOrderStatusEl.classList.add('status-diproses');
+            statusMessageEl.textContent = "Pesanan Anda sedang kami siapkan.";
+            if (refreshStatusBtn) refreshStatusBtn.style.display = 'none';
+        } else if (lowerStatus.includes('gagal') || lowerStatus.includes('dibatalkan') || lowerStatus.includes('failed')) {
+            currentOrderStatusEl.classList.add('status-gagal');
+            statusMessageEl.textContent = "Pembayaran gagal atau order dibatalkan. Silakan hubungi kami jika ada kendala.";
+            if (refreshStatusBtn) refreshStatusBtn.style.display = 'block';
+        } else {
+            statusMessageEl.textContent = "Status order tidak diketahui saat ini.";
+            if (refreshStatusBtn) refreshStatusBtn.style.display = 'block';
+        }
+    }
+    
+    async function openPaymentStatusPage(orderData) {
+        if (!orderData || !orderData.orderId) {
+            console.error("Data order tidak lengkap untuk menampilkan halaman status.");
+            alert("Gagal menampilkan detail order. Silakan cek riwayat Anda.");
+            return;
+        }
+        currentActiveOrderId = orderData.orderId; 
+        statusOrderIdEl.textContent = orderData.orderId;
+        statusUserEmailEl.textContent = orderData.email || sessionStorage.getItem('userEmail') || 'Tidak diketahui';
+        statusPaymentMethodEl.textContent = orderData.paymentMethodName || orderData.paymentMethod?.replace(/_/g, ' ').toUpperCase() || 'Tidak diketahui';
+        
+        // Tampilkan alamat pengiriman di halaman status
+        if (orderData.shippingDetails && statusShippingAddressEl) {
+            const sd = orderData.shippingDetails;
+            statusShippingAddressEl.innerHTML = `
+                ${sd.name ? `<strong>${sd.name}</strong><br>` : ''}
+                ${sd.phone ? `${sd.phone}<br>` : ''}
+                ${sd.addressLine1 ? `${sd.addressLine1}<br>` : ''}
+                ${sd.addressLine2 ? `${sd.addressLine2}<br>` : ''}
+                ${sd.district ? `${sd.district}, ` : ''} ${sd.city ? `${sd.city}<br>` : ''}
+                ${sd.postalCode ? `Kode Pos: ${sd.postalCode}` : ''}
+                ${sd.notes ? `<br><em>Catatan: ${sd.notes}</em>` : ''}
+            `;
+        } else if (statusShippingAddressEl) {
+            statusShippingAddressEl.innerHTML = '<em>Alamat pengiriman tidak tersedia.</em>';
+        }
+        
+        statusOrderItemsEl.innerHTML = '';
+        (orderData.items || []).forEach(item => {
+            const li = document.createElement('li');
+            const itemPrice = item.price || item.item_price; 
+            const itemQuantity = item.quantity || 1; 
+            li.innerHTML = `<span class="item-name">${item.name}</span> (x${itemQuantity}) <span class="item-price">${formatRupiah(itemPrice * itemQuantity)}</span>`;
+            statusOrderItemsEl.appendChild(li);
+        });
+        statusOrderTotalEl.textContent = formatRupiah(orderData.total);
+        paymentInstructionsEl.innerHTML = getPaymentInstructionsText(orderData.paymentMethod, orderData.orderId, orderData.total);
+        displayOrderStatus(orderData.status || "Memuat...");
+
+        if (cartPopup.classList.contains('show')) cartPopup.classList.remove('show');
+        if (shippingAddressPage.style.display === 'block') shippingAddressPage.style.display = 'none';
+        if (paymentMethodSelectionPage.style.display === 'block') paymentMethodSelectionPage.style.display = 'none';
+        paymentStatusPage.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+        paymentStatusPage.scrollTop = 0;
+    }
+
+    async function fetchAndUpdateCurrentOrderStatus() {
+    if (!currentActiveOrderId) { console.log("Tidak ada order aktif untuk diperbarui statusnya."); return; }
+    if (refreshStatusBtn) { refreshStatusBtn.disabled = true; refreshStatusBtn.textContent = 'Memeriksa...'; }
+    try {
+        const response = await fetch(`/api/order/${currentActiveOrderId}/details`);
+        if (!response.ok) {
+            const errData = await response.json().catch(() => ({ message: `Error ${response.status}` }));
+            throw new Error(errData.message || `Gagal mengambil status order ${currentActiveOrderId}.`);
+        }
+        const orderDetails = await response.json();
+        
+        // ===== TAMBAHKAN BARIS INI =====
+        if(statusOrderIdEl) statusOrderIdEl.textContent = orderDetails.id;
+        // ===============================
+        
+        if(statusUserEmailEl) statusUserEmailEl.textContent = orderDetails.user_email;
+        if(statusPaymentMethodEl) statusPaymentMethodEl.textContent = orderDetails.payment_method.replace(/_/g, ' ').toUpperCase();
+        if(statusOrderTotalEl) statusOrderTotalEl.textContent = formatRupiah(orderDetails.total); 
+        if(paymentInstructionsEl) paymentInstructionsEl.innerHTML = getPaymentInstructionsText(orderDetails.payment_method, orderDetails.id, orderDetails.total);
+        
+        // Update tampilan alamat di halaman status jika ada
+        if (orderDetails.shipping_details && statusShippingAddressEl) {
+            const sd = orderDetails.shipping_details;
+            statusShippingAddressEl.innerHTML = `
+                ${sd.name ? `<strong>${sd.name}</strong><br>` : ''}
+                ${sd.phone ? `${sd.phone}<br>` : ''}
+                ${sd.address_line1 ? `${sd.address_line1}<br>` : ''}
+                ${sd.address_line2 ? `${sd.address_line2}<br>` : ''}
+                ${sd.district ? `${sd.district}, ` : ''} ${sd.city ? `${sd.city}<br>` : ''}
+                ${sd.postal_code ? `Kode Pos: ${sd.postal_code}` : ''}
+                ${sd.notes ? `<br><em>Catatan: ${sd.notes}</em>` : ''}
+            `;
+        } else if (statusShippingAddressEl) {
+            statusShippingAddressEl.innerHTML = '<em>Alamat pengiriman tidak tersedia.</em>';
+        }
+
+        displayOrderStatus(orderDetails.status);
+
+        if(statusOrderItemsEl){
+            statusOrderItemsEl.innerHTML = '';
+            (orderDetails.items || []).forEach(item => { 
+                const li = document.createElement('li');
+                const unitPrice = item.price || item.item_price; const quantity = item.quantity || 1;
+                let displayPrice;
+                if (typeof unitPrice === 'string' && unitPrice.startsWith('Rp')) { displayPrice = formatRupiah(parseRupiah(unitPrice) * quantity); } 
+                else { displayPrice = formatRupiah(unitPrice * quantity); }
+                li.innerHTML = `<span class="item-name">${item.name}</span> (x${quantity}) <span class="item-price">${displayPrice}</span>`;
+                statusOrderItemsEl.appendChild(li);
+            });
+        }
+    } catch (error) {
+        console.error("Error refresh status:", error);
+        if(statusMessageEl) statusMessageEl.textContent = `Gagal memperbarui status: ${error.message}. Coba lagi nanti.`;
+    } finally {
+        if(refreshStatusBtn){ refreshStatusBtn.disabled = false; refreshStatusBtn.textContent = 'Refresh Status'; }
+    }
+}
+
+    // --- FUNGSI UNTUK STOK PRODUK DI MENU ---
+    async function fetchAndDisplayProductAvailability() {
+        try {
+            const response = await fetch('/api/products/all');
+            if (!response.ok) { console.error("Gagal mengambil data produk untuk menu."); document.querySelectorAll('.stock-value').forEach(el => el.textContent = 'Gagal muat'); return; }
+            const data = await response.json();
+            allProductsData = data.products; 
+
+            document.querySelectorAll('.product-card').forEach(card => {
+                const baseNameFromData = card.dataset.baseName;     
+                if (baseNameFromData) { 
+                    if (baseNameFromData === "Bawang Goreng" && bawangCard) { updateBawangGorengDetails(); } 
+                    else if (baseNameFromData === "Sagoo Mangoo" && sagooCard) { updateSagooMangooDetails(); } 
+                    else if (baseNameFromData === "Mango Sticky Rice" && stickyRiceCard) { updateStickyRiceDetails(); } 
+                    else if (baseNameFromData === "Ayam Lada Hitam" && ayamLadaCard) { updateAyamLadaDetails(); } 
+                    else if (baseNameFromData === "Buko Pandan" && bukoPandanCard) { updateBukoPandanDetails(); } 
+                    else if (baseNameFromData === "Baso Aci" && basoAciCard) { updateBasoAciDetails(); } 
+                    else if (baseNameFromData === "Rendang Suwir" && rendangSuwirCard) { updateRendangSuwirDetails(); } 
+                    else if (baseNameFromData === "Sambal Cumi" && sambalCumiCard) { updateSambalCumiDetails(); }
+                } 
+                // Logika untuk produk non-varian (jika ada) bisa ditambahkan di sini
+                const qtyInput = card.querySelector('.quantity-input-card');
+                if(qtyInput) qtyInput.value = 1;
+            });
+        } catch (error) {
+            console.error("Error fetching product availability:", error);
+            document.querySelectorAll('.stock-value').forEach(el => el.textContent = 'Error');
+        }
+    }
+    
+    // --- EVENT LISTENERS LAINNYA (Produk, Filter, Pop-up, Navigasi Status) ---
+    if (bawangCard) { [bawangFlavorSelector, bawangSizeSelector].forEach(sel => sel?.addEventListener('change', () => { if (allProductsData.length > 0) { updateBawangGorengDetails(); } else { fetchAndDisplayProductAvailability(); }})); }
+    if (sagooCard) { [sagooSugarSelector, sagooSizeSelector].forEach(sel => sel?.addEventListener('change', () => { if (allProductsData.length > 0) { updateSagooMangooDetails(); } else { fetchAndDisplayProductAvailability(); }})); }
+    if (stickyRiceCard) { [stickyRiceSugarSelector, stickyRiceToppingSelector].forEach(sel => sel?.addEventListener('change', () => { if (allProductsData.length > 0) { updateStickyRiceDetails(); } else { fetchAndDisplayProductAvailability(); }})); }
+    if (ayamLadaCard) { [ayamLadaFlavorSelector, ayamLadaPortionSelector].forEach(sel => sel?.addEventListener('change', () => { if (allProductsData.length > 0) { updateAyamLadaDetails(); } else { fetchAndDisplayProductAvailability(); }})); }
+    if (bukoPandanCard) { [bukoPandanSugarSelector, bukoPandanSizeSelector].forEach(sel => sel?.addEventListener('change', () => { if (allProductsData.length > 0) { updateBukoPandanDetails(); } else { fetchAndDisplayProductAvailability(); }})); }
+    if (basoAciCard) { [basoAciFlavorSelector, basoAciPortionSelector].forEach(sel => sel?.addEventListener('change', () => { if (allProductsData.length > 0) { updateBasoAciDetails(); } else { fetchAndDisplayProductAvailability(); }})); }
+    if (rendangSuwirCard) { [rendangFlavorSelector, rendangWeightSelector].forEach(sel => sel?.addEventListener('change', () => { if (allProductsData.length > 0) { updateRendangSuwirDetails(); } else { fetchAndDisplayProductAvailability(); }})); }
+    if (sambalCumiCard) { [sambalCumiFlavorSelector, sambalCumiSizeSelector].forEach(sel => sel?.addEventListener('change', () => { if (allProductsData.length > 0) { updateSambalCumiDetails(); } else { fetchAndDisplayProductAvailability(); }})); }
+    
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+        button.addEventListener('click', (e) => {
+            const card = e.target.closest('.product-card'); if (!card || e.target.disabled) return;
+            const quantityInput = card.querySelector('.quantity-input-card');
+            const quantityToAdd = quantityInput ? parseInt(quantityInput.value) : 1;
+            if (isNaN(quantityToAdd) || quantityToAdd < 1) { alert("Masukkan jumlah yang valid (minimal 1)."); if(quantityInput) quantityInput.value = 1; return; }
+            let name, priceStr;
+            const baseNameFromCard = card.dataset.baseName;
+            // Logika untuk mendapatkan nama & harga produk (termasuk varian)
+            if (baseNameFromCard === "Bawang Goreng" && bawangCard) { const flavor = bawangFlavorSelector.options[bawangFlavorSelector.selectedIndex].dataset.variantPart || bawangFlavorSelector.value; const size = bawangSizeSelector.options[bawangSizeSelector.selectedIndex].dataset.variantPart || bawangSizeSelector.value; name = `${baseNameFromCard} ${flavor} ${size}`; priceStr = bawangPriceElement.textContent; }
+            else if (baseNameFromCard === "Sagoo Mangoo" && sagooCard) { const sugarLevel = sagooSugarSelector.options[sagooSugarSelector.selectedIndex].dataset.variantPart || sagooSugarSelector.value; const size = sagooSizeSelector.options[sagooSizeSelector.selectedIndex].dataset.variantPart || sagooSizeSelector.value; name = `${baseNameFromCard} ${sugarLevel} ${size}`; priceStr = sagooPriceElement.textContent; }
+            else if (baseNameFromCard === "Mango Sticky Rice" && stickyRiceCard) { const sugarLevel = stickyRiceSugarSelector.options[stickyRiceSugarSelector.selectedIndex].dataset.variantPart || stickyRiceSugarSelector.value; const topping = stickyRiceToppingSelector.options[stickyRiceToppingSelector.selectedIndex].dataset.variantPart || stickyRiceToppingSelector.value; name = `${baseNameFromCard} ${sugarLevel} ${topping}`; priceStr = stickyRicePriceElement.textContent; }
+            else if (baseNameFromCard === "Ayam Lada Hitam" && ayamLadaCard) { const flavor = ayamLadaFlavorSelector.options[ayamLadaFlavorSelector.selectedIndex].dataset.variantPart || ayamLadaFlavorSelector.value; const portion = ayamLadaPortionSelector.options[ayamLadaPortionSelector.selectedIndex].dataset.variantPart || ayamLadaPortionSelector.value; name = `${baseNameFromCard} ${flavor} ${portion}`; priceStr = ayamLadaPriceElement.textContent; }
+            else if (baseNameFromCard === "Buko Pandan" && bukoPandanCard) { const sugar = bukoPandanSugarSelector.options[bukoPandanSugarSelector.selectedIndex].dataset.variantPart || bukoPandanSugarSelector.value; const size = bukoPandanSizeSelector.options[bukoPandanSizeSelector.selectedIndex].dataset.variantPart || bukoPandanSizeSelector.value; name = `${baseNameFromCard} ${sugar} ${size}`; priceStr = bukoPandanPriceElement.textContent; }
+            else if (baseNameFromCard === "Baso Aci" && basoAciCard) { const flavor = basoAciFlavorSelector.options[basoAciFlavorSelector.selectedIndex].dataset.variantPart || basoAciFlavorSelector.value; const portion = basoAciPortionSelector.options[basoAciPortionSelector.selectedIndex].dataset.variantPart || basoAciPortionSelector.value; name = `${baseNameFromCard} ${flavor} ${portion}`; priceStr = basoAciPriceElement.textContent; }
+            else if (baseNameFromCard === "Rendang Suwir" && rendangSuwirCard) { const flavor = rendangFlavorSelector.options[rendangFlavorSelector.selectedIndex].dataset.variantPart || rendangFlavorSelector.value; const weight = rendangWeightSelector.options[rendangWeightSelector.selectedIndex].dataset.variantPart || rendangWeightSelector.value; name = `${baseNameFromCard} ${flavor} ${weight}`; priceStr = rendangPriceElement.textContent; }
+            else if (baseNameFromCard === "Sambal Cumi" && sambalCumiCard) { const flavor = sambalCumiFlavorSelector.options[sambalCumiFlavorSelector.selectedIndex].dataset.variantPart || sambalCumiFlavorSelector.value; const size = sambalCumiSizeSelector.options[sambalCumiSizeSelector.selectedIndex].dataset.variantPart || sambalCumiSizeSelector.value; name = `${baseNameFromCard} ${flavor} ${size}`; priceStr = sambalCumiPriceElement.textContent; }
+            else { /* Logika untuk produk non-varian jika ada */ name = card.querySelector('.product-title')?.textContent; priceStr = card.querySelector('.product-price')?.textContent; }
+
+            if (name && priceStr) {
+                const addedSuccessfully = addToCart(name, priceStr, quantityToAdd); 
+                if (addedSuccessfully) { e.target.textContent = 'Ditambahkan!'; if (quantityInput) quantityInput.value = 1; setTimeout(() => { fetchAndDisplayProductAvailability(); }, 500); } 
+                else { fetchAndDisplayProductAvailability(); }
+            }
+        });
+    });
+    document.querySelectorAll('.product-card').forEach(card => {
+        const decreaseBtn = card.querySelector('.decrease-qty-card'); const increaseBtn = card.querySelector('.increase-qty-card'); const quantityInput = card.querySelector('.quantity-input-card');
+        if (decreaseBtn && quantityInput) { decreaseBtn.addEventListener('click', () => { let currentValue = parseInt(quantityInput.value); if (currentValue > 1) { quantityInput.value = currentValue - 1; } }); }
+        if (increaseBtn && quantityInput) { increaseBtn.addEventListener('click', () => { let currentValue = parseInt(quantityInput.value); const maxStock = parseInt(quantityInput.max); if (!isNaN(maxStock) && currentValue >= maxStock ) { alert("Anda tidak bisa menambah melebihi stok yang tersedia."); } else { quantityInput.value = currentValue + 1; } }); }
+    });
+    if (cartIcon) cartIcon.addEventListener('click', (e) => { e.preventDefault(); cartPopup.classList.toggle('show'); });
+    if (closePopupBtn) closePopupBtn.addEventListener('click', () => cartPopup.classList.remove('show'));
+    window.addEventListener('click', (event) => { if (cartPopup.classList.contains('show') && !cartPopup.contains(event.target) && event.target !== cartIcon && !cartIcon.contains(event.target)) { cartPopup.classList.remove('show'); } });
+    if (paymentMethodsContainer) { paymentMethodsContainer.addEventListener('click', (e) => { const targetMethod = e.target.closest('.method'); if (targetMethod) { paymentMethodsContainer.querySelectorAll('.method').forEach(m => m.classList.remove('selected')); targetMethod.classList.add('selected'); selectedPaymentMethod = targetMethod.dataset.method; selectedPaymentMethodName = targetMethod.dataset.methodName; } }); }
+    if (refreshStatusBtn) refreshStatusBtn.addEventListener('click', fetchAndUpdateCurrentOrderStatus);
+    if (backToMenuBtn) { backToMenuBtn.addEventListener('click', () => { paymentStatusPage.style.display = 'none'; document.body.style.overflow = 'auto'; currentActiveOrderId = null; }); }
+    if (goToHistoryBtn) { goToHistoryBtn.addEventListener('click', () => { window.location.href = 'history.html'; }); }
+    if (filterSelect) { filterSelect.addEventListener('change', (e) => { const value = e.target.value; document.querySelectorAll('.product-card').forEach(card => { card.style.display = (value === 'all' || card.dataset.category === value) ? 'block' : 'none'; }); }); }
+    
+    // --- INISIALISASI ---
+    updateCartDisplay(); 
+    fetchAndDisplayProductAvailability(); 
+    const urlParams = new URLSearchParams(window.location.search);
+    const orderIdFromUrl = urlParams.get('order_id_from_history');
+    if (orderIdFromUrl) {
+        (async () => {
+            try {
+                const response = await fetch(`/api/order/${orderIdFromUrl}/details`);
+                if (!response.ok) { const errData = await response.json().catch(() => ({message: "Order tidak ditemukan atau error server."})); throw new Error(errData.message); }
+                const orderDetails = await response.json();
+                openPaymentStatusPage({ // Pastikan orderDetails dari backend sudah termasuk shipping_details
+                    orderId: orderDetails.id, email: orderDetails.user_email, paymentMethod: orderDetails.payment_method,
+                    paymentMethodName: orderDetails.payment_method.replace(/_/g, ' ').toUpperCase(), status: orderDetails.status,
+                    items: orderDetails.items, total: orderDetails.total,
+                    shippingDetails: orderDetails.shipping_details // Kirim data alamat ke fungsi status
+                });
+            } catch (error) {
+                console.error("Gagal menampilkan status order dari URL:", error);
+                alert("Tidak dapat memuat detail pesanan: " + error.message + "\nAnda akan diarahkan ke menu utama.");
+            }
+        })();
+    }
+});
+</script>
+</body>
+</html>

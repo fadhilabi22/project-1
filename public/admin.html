@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Toko Makanda</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+    <div id="customNotification" class="custom-notification"><p id="customNotificationMessage"></p></div>
+    <div id="confirmOverlay" class="modal-overlay"><div class="confirm-modal-content"><p id="confirmMessage"></p><div class="confirm-buttons"><button id="confirmCancelBtn" class="confirm-btn cancel">Cancel</button><button id="confirmOkBtn" class="confirm-btn ok">OK</button></div></div></div>
+
+    <header class="admin-header no-print">
+        <img src="img/makandalogo.png" alt="Makanda Logo" class="logo-img">
+        <div><span id="adminUserGreeting" style="margin-right:15px;"></span><a href="index.html" style="background: #6c757d; margin-right:10px; padding: 8px 12px; color:white; text-decoration: none; border-radius:4px;">Lihat Toko</a><button id="adminLogoutBtn">Logout</button></div>
+    </header>
+
+    <div class="admin-container">
+        <aside class="admin-sidebar no-print">
+            <h2>Menu Navigasi</h2>
+            <ul>
+                <li class="active"><a href="#" id="navOrders"><i class="fas fa-receipt"></i> Kelola Pesanan</a></li>
+                <li><a href="#" id="navProducts"><i class="fas fa-box-open"></i> Kelola Produk</a></li>
+                <li><a href="#" id="navCustomerReport"><i class="fas fa-user-tag"></i> Laporan Riwayat</a></li>
+            </ul>
+        </aside>
+
+        <main class="admin-main-content">
+            <div class="content-header no-print"><h2 id="contentTitle">Kelola Pesanan</h2></div>
+            
+            <div id="ordersContent" style="display:block;">
+                <p class="loading">Memuat daftar pesanan...</p>
+                <table class="orders-table" style="display:none;">
+                    <thead><tr><th>ID Order</th><th>Email Pembeli</th><th>Item Dipesan</th><th>Total</th><th>Metode Bayar</th><th>Tgl. Order</th><th>Status Saat Ini</th><th>Ubah Status</th><th>Aksi Status</th><th>Cetak Resi</th></tr></thead>
+                    <tbody id="ordersTableBody"></tbody>
+                </table>
+                <p class="no-orders" style="display:none;">Belum ada pesanan yang masuk.</p>
+                <p class="error-message" style="display:none; color:red;"></p>
+            </div>
+            
+            <div id="productsContent" style="display:none;">
+                <p class="loading-products">Memuat daftar produk...</p>
+                <table class="products-table" style="display:none;">
+                    <thead><tr><th>ID</th><th>Gambar</th><th>Nama Produk</th><th>Kategori</th><th>Harga</th><th>Stok Saat Ini</th><th>Status Produk</th><th>Aksi Stok</th><th>Aksi Status</th></tr></thead>
+                    <tbody id="productsTableBody"></tbody>
+                </table>
+                <p class="no-products" style="display:none;">Belum ada produk.</p>
+                <p class="error-message-products" style="display:none; color:red;"></p>
+            </div>
+
+            <div id="customerReportContent" style="display:none;">
+                <div id="customerReportResultContainer" class="printable-area" style="display:none;">
+                    <div class="report-header">
+                        <img src="img/makandalogo.png" alt="Makanda Logo" class="logo-img-receipt">
+                        <h2>Laporan Riwayat Pembelian Pelanggan</h2>
+                        <p id="customerReportInfo"></p><hr>
+                    </div>
+                    <h3>Ringkasan</h3>
+                    <div id="customerReportSummary" class="report-summary-box"></div>
+                    <h3>Detail Pembelian</h3>
+                    <button id="printCustomerReportBtn" class="action-btn no-print" style="margin-bottom: 15px;" disabled>Cetak Laporan (PDF)</button>
+                    <table class="reports-table">
+                        <thead><tr><th>Tgl. Pembelian</th><th>ID Order</th><th>Nama Produk</th><th>Jumlah</th><th>Harga Satuan</th><th>Subtotal</th></tr></thead>
+                        <tbody id="customerReportTableBody"></tbody>
+                    </table>
+                    <p class="no-customer-report-data" style="display:none; text-align: center; padding: 20px;">Tidak ada data untuk pelanggan/periode yang dipilih.</p>
+                </div>
+                <p class="loading-customer-report" style="display:none; text-align: center; padding: 20px;">Membuat laporan pelanggan...</p>
+            </div>
+        </main>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- DEKLARASI SEMUA ELEMEN ---
+        const contentTitleEl = document.getElementById('contentTitle');
+        const adminUserGreetingEl = document.getElementById('adminUserGreeting');
+        const adminLogoutBtn = document.getElementById('adminLogoutBtn');
+        // Elemen Kelola Pesanan
+        const navOrdersBtn = document.getElementById('navOrders');
+        const ordersContentEl = document.getElementById('ordersContent');
+        const ordersTable = ordersContentEl.querySelector('table.orders-table');
+        const ordersTableBody = ordersContentEl.querySelector('#ordersTableBody');
+        const loadingOrdersMsg = ordersContentEl.querySelector('.loading');
+        const errorOrdersMsg = ordersContentEl.querySelector('.error-message');
+        const noOrdersMsg = ordersContentEl.querySelector('.no-orders');
+        // Elemen Kelola Produk
+        const navProductsBtn = document.getElementById('navProducts');
+        const productsContentEl = document.getElementById('productsContent');
+        const productsTableBody = productsContentEl.querySelector('#productsTableBody');
+        const loadingProductsMsg = productsContentEl.querySelector('.loading-products');
+        const errorProductsMsg = productsContentEl.querySelector('.error-message-products');
+        const noProductsMsg = productsContentEl.querySelector('.no-products');
+        // Elemen Laporan Pelanggan
+        const navCustomerReport = document.getElementById('navCustomerReport');
+        const customerReportContentEl = document.getElementById('customerReportContent');
+        const generateCustomerReportBtn = document.getElementById('generateCustomerReportBtn');
+        const printCustomerReportBtn = document.getElementById('printCustomerReportBtn');
+        const customerReportResultContainer = document.getElementById('customerReportResultContainer');
+        const customerReportTableBody = document.getElementById('customerReportTableBody');
+        const customerReportSummaryEl = document.getElementById('customerReportSummary');
+        const customerReportInfoEl = document.getElementById('customerReportInfo');
+        const loadingCustomerReportMsg = customerReportContentEl.querySelector('.loading-customer-report');
+        const noCustomerReportDataMsg = customerReportResultContainer.querySelector('.no-customer-report-data');
+        
+        // --- FUNGSI HELPER ---
+        function showCustomNotification(message, type = 'info') {
+            const notification = document.getElementById('customNotification');
+            const notificationMessage = document.getElementById('customNotificationMessage');
+            if (!notification || !notificationMessage) return;
+            notificationMessage.textContent = message;
+            notification.className = 'custom-notification';
+            notification.classList.add(type);
+            notification.classList.add('show');
+            setTimeout(() => { notification.classList.remove('show'); }, 3000);
+        }
+
+        function showCustomConfirm(message) {
+            const confirmOverlay = document.getElementById('confirmOverlay');
+            const confirmMessage = document.getElementById('confirmMessage');
+            let confirmOkBtn = document.getElementById('confirmOkBtn');
+            let confirmCancelBtn = document.getElementById('confirmCancelBtn');
+            if(!confirmOverlay || !confirmMessage || !confirmOkBtn || !confirmCancelBtn) return Promise.resolve(false);
+            let newOkBtn = confirmOkBtn.cloneNode(true);
+            confirmOkBtn.parentNode.replaceChild(newOkBtn, confirmOkBtn);
+            confirmOkBtn = newOkBtn;
+            let newCancelBtn = confirmCancelBtn.cloneNode(true);
+            confirmCancelBtn.parentNode.replaceChild(newCancelBtn, confirmCancelBtn);
+            confirmCancelBtn = newCancelBtn;
+            return new Promise((resolve) => {
+                confirmMessage.textContent = message;
+                confirmOverlay.style.display = 'flex';
+                confirmOkBtn.onclick = () => { confirmOverlay.style.display = 'none'; resolve(true); };
+                confirmCancelBtn.onclick = () => { confirmOverlay.style.display = 'none'; resolve(false); };
+            });
+        }
+
+        function formatRupiah(angka) {
+            if (angka === null || isNaN(parseInt(angka))) return 'Rp0';
+            return 'Rp' + parseInt(angka).toLocaleString('id-ID');
+        }
+
+        function getStatusBadgeClass(statusText) {
+            if (!statusText) return '';
+            const lowerStatus = statusText.toLowerCase();
+            if (lowerStatus.includes('menunggu pembayaran')) return 'status-menunggu';
+            if (lowerStatus.includes('pembayaran dikonfirmasi')) return 'status-dikonfirmasi';
+            if (lowerStatus.includes('selesai')) return 'status-dikonfirmasi';
+            if (lowerStatus.includes('pesanan diproses')) return 'status-diproses';
+            if (lowerStatus.includes('gagal') || lowerStatus.includes('dibatalkan')) return 'status-gagal';
+            return 'status-badge';
+        }
+
+        function getProductStatusBadgeClass(statusText) {
+            if (!statusText) return '';
+            const lowerStatus = statusText.toLowerCase();
+            if (lowerStatus === 'tersedia') return 'product-status-tersedia';
+            if (lowerStatus === 'habis') return 'product-status-habis';
+            return 'product-status-badge';
+        }
+
+        // --- Pengecekan Akses Admin ---
+        const adminUserEmail = sessionStorage.getItem('userEmail');
+        const adminUserRole = sessionStorage.getItem('userRole');
+        if (adminUserRole !== 'admin') {
+            showCustomNotification('Akses ditolak. Anda bukan admin.', 'error');
+            setTimeout(() => { window.location.href = 'index.html'; }, 2000);
+            return;
+        }
+
+        if (adminUserEmail && adminUserGreetingEl) {
+            adminUserGreetingEl.textContent = `Admin: ${adminUserEmail.split('@')[0]}`;
+        }
+        if(adminLogoutBtn) {
+            adminLogoutBtn.addEventListener('click', () => {
+                sessionStorage.clear();
+                window.location.href = 'index.html';
+            });
+        }
+
+
+        // --- NAVIGASI ANTAR HALAMAN ---
+        function showContent(activeNav, activeContent) {
+            document.querySelectorAll('.admin-main-content > div').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('aside ul li').forEach(li => li.classList.remove('active'));
+            if (activeContent) activeContent.style.display = 'block';
+            if (activeNav) activeNav.parentElement.classList.add('active');
+        }
+
+        function showOrdersContent() {
+            contentTitleEl.textContent = 'Kelola Pesanan';
+            showContent(navOrdersBtn, ordersContentEl);
+            fetchAllOrders();
+        }
+        function showProductsContent() {
+            contentTitleEl.textContent = 'Kelola Produk';
+            showContent(navProductsBtn, productsContentEl);
+            fetchAllProductsForAdmin();
+        }
+        function showCustomerReportContent() {
+    contentTitleEl.textContent = 'Laporan Riwayat';
+    showContent(navCustomerReport, customerReportContentEl);
+    generateCustomerReport(); // tambahkan ini agar langsung tampil semua
+}
+
+
+        // --- EVENT LISTENERS NAVIGASI ---
+        if (navOrdersBtn) navOrdersBtn.addEventListener('click', (e) => { e.preventDefault(); showOrdersContent(); });
+        if (navProductsBtn) navProductsBtn.addEventListener('click', (e) => { e.preventDefault(); showProductsContent(); });
+        if (navCustomerReport) navCustomerReport.addEventListener('click', (e) => { e.preventDefault(); showCustomerReportContent(); });
+        
+        
+        // --- LOGIKA KELOLA PESANAN ---
+        async function fetchAllOrders() {
+            loadingOrdersMsg.style.display = 'block';
+            errorOrdersMsg.style.display = 'none';
+            noOrdersMsg.style.display = 'none';
+            ordersTable.style.display = 'none';
+            ordersTableBody.innerHTML = '';
+            try {
+                const response = await fetch('/api/order/all');
+                if (!response.ok) {
+                    const errData = await response.json().catch(() => ({ message: `Error ${response.status}` }));
+                    throw new Error(errData.message || 'Gagal mengambil data pesanan.');
+                }
+                const data = await response.json();
+                if (data.orders && data.orders.length > 0) {
+                    displayOrders(data.orders);
+                    ordersTable.style.display = 'table';
+                } else {
+                    noOrdersMsg.style.display = 'block';
+                }
+            } catch (err) {
+                console.error("Error fetching orders:", err);
+                errorOrdersMsg.textContent = `Gagal memuat pesanan: ${err.message}`;
+                errorOrdersMsg.style.display = 'block';
+            } finally {
+                loadingOrdersMsg.style.display = 'none';
+            }
+        }
+        
+        function displayOrders(orders) {
+            ordersTableBody.innerHTML = '';
+            orders.forEach(order => {
+                const row = ordersTableBody.insertRow();
+                row.setAttribute('data-order-id', order.id);
+                let itemsListHtml = '<ul class="order-items-list" style="margin:0; padding-left:15px;">';
+                if(order.items && order.items.length > 0){
+                    order.items.forEach(item => {
+                        const itemPrice = typeof item.price === 'number' ? item.price : parseInt(String(item.price).replace(/[Rp.,]/g, '')) || 0;
+                        itemsListHtml += `<li>${item.name} (${formatRupiah(itemPrice)} x ${item.quantity || 1})</li>`;
+                    });
+                } else { itemsListHtml += '<li>Tidak ada detail item</li>'; }
+                itemsListHtml += '</ul>';
+
+                const paymentMethodDisplay = order.payment_method ? order.payment_method.replace(/_/g, ' ').toUpperCase() : 'N/A';
+                const orderStatusLower = (order.status || '').toLowerCase();
+                const isPaidOrProcessed = orderStatusLower.includes('pembayaran dikonfirmasi') || orderStatusLower.includes('pesanan diproses') || orderStatusLower.includes('selesai') || orderStatusLower.includes('paid');
+                
+                row.innerHTML = `<td>${order.id}</td><td>${order.user_email}</td><td>${itemsListHtml}</td><td>${formatRupiah(order.total)}</td><td>${paymentMethodDisplay}</td><td>${new Date(order.created_at).toLocaleDateString('id-ID', { day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}</td><td><span class="status-badge ${getStatusBadgeClass(order.status)}">${order.status || 'N/A'}</span></td><td><select class="status-select"><option value="Menunggu Pembayaran" ${orderStatusLower.startsWith('menunggu pembayaran') ? 'selected' : ''}>Menunggu Pembayaran</option><option value="Pembayaran Dikonfirmasi" ${order.status === 'Pembayaran Dikonfirmasi' ? 'selected' : ''}>Pembayaran Dikonfirmasi</option><option value="Pesanan Diproses" ${order.status === 'Pesanan Diproses' ? 'selected' : ''}>Pesanan Diproses</option><option value="Selesai" ${order.status === 'Selesai' ? 'selected' : ''}>Selesai</option><option value="Dibatalkan" ${order.status === 'Dibatalkan' ? 'selected' : ''}>Dibatalkan</option></select></td><td><button class="update-status-btn action-btn">Update</button></td><td><button class="print-receipt-btn" data-order-id="${order.id}" ${!isPaidOrProcessed ? 'disabled' : ''}>Cetak Resi</button></td>`;
+
+                const updateButton = row.querySelector('.update-status-btn');
+                const statusSelect = row.querySelector('.status-select');
+                
+                updateButton.addEventListener('click', async () => {
+                    const newStatus = statusSelect.value; const orderId = order.id;
+                    const userConfirmed = await showCustomConfirm(`Yakin ingin mengubah status Order #${orderId} menjadi "${newStatus}"?`);
+                    if (userConfirmed) {
+                        const originalButtonText = updateButton.textContent;
+                        updateButton.textContent = 'Updating...'; updateButton.disabled = true;
+                        try {
+                            const res = await fetch(`/api/order/${orderId}/status`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status: newStatus }) });
+                            const result = await res.json();
+                            if (!res.ok) throw new Error(result.message || `Gagal update status.`);
+                            showCustomNotification(result.message, 'success');
+                            const statusBadge = row.querySelector('.status-badge');
+                            statusBadge.textContent = newStatus;
+                            statusBadge.className = `status-badge ${getStatusBadgeClass(newStatus)}`;
+                            const printBtn = row.querySelector('.print-receipt-btn');
+                            const newStatusLower = newStatus.toLowerCase();
+                            const newIsPaidOrProcessed = newStatusLower.includes('pembayaran dikonfirmasi') || newStatusLower.includes('pesanan diproses') || newStatusLower.includes('selesai') || newStatusLower.includes('paid');
+                            if (printBtn) printBtn.disabled = !newIsPaidOrProcessed;
+                        } catch (err) { showCustomNotification(`Error: ${err.message}`, 'error');
+                        } finally { updateButton.textContent = originalButtonText; updateButton.disabled = false; }
+                    }
+                });
+            });
+        }
+        
+        // ... (Fungsi Cetak Resi dan event listenernya)
+        function generateAndPrintReceipt(order) { /* ... */ }
+        ordersTableBody.addEventListener('click', async (event) => { /* ... */ });
+
+
+        // --- LOGIKA KELOLA PRODUK ---
+        async function fetchAllProductsForAdmin() {
+    loadingProductsMsg.style.display = 'block';
+    errorProductsMsg.style.display = 'none';
+    noProductsMsg.style.display = 'none';
+    productsTableBody.innerHTML = '';
+    const productsTable = productsContentEl.querySelector('table.products-table');
+
+    try {
+        const response = await fetch('/api/products/all'); // pastikan route ini ada di backend
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({ message: `Error ${response.status}` }));
+            throw new Error(errorData.message || 'Gagal mengambil produk.');
+        }
+
+        const data = await response.json();
+        if (data.products && data.products.length > 0) {
+            displayProductsForAdmin(data.products);
+            productsTable.style.display = 'table';
+        } else {
+            noProductsMsg.style.display = 'block';
+        }
+    } catch (err) {
+        console.error('Error fetching products:', err);
+        errorProductsMsg.textContent = `Gagal memuat produk: ${err.message}`;
+        errorProductsMsg.style.display = 'block';
+    } finally {
+        loadingProductsMsg.style.display = 'none';
+    }
+}
+
+function displayProductsForAdmin(products) {
+    productsTableBody.innerHTML = '';
+    products.forEach(product => {
+        // --- TAMBAHAN BARU: LOGIKA MENENTUKAN STATUS DARI STOK ---
+        const statusText = product.stock > 0 ? 'Tersedia' : 'Habis';
+        // --- AKHIR TAMBAHAN BARU ---
+
+        const row = productsTableBody.insertRow();
+        // Gunakan variabel statusText yang baru dibuat, bukan lagi product.status
+        row.innerHTML = `
+            <td>${product.id}</td>
+            <td><img src="${product.image_url}" alt="${product.name}" style="width:50px; height:auto;"></td>
+            <td>${product.name}</td>
+            <td>${product.category}</td>
+            <td>${formatRupiah(product.price)}</td>
+            <td>${product.stock}</td>
+            <td><span class="product-status-badge ${getProductStatusBadgeClass(statusText)}">${statusText}</span></td>
+            <td><input type="number" class="stock-input" value="${product.stock}" style="width:60px;"><button class="update-stock-btn action-btn">Update</button></td>
+            <td>
+                <select class="status-select">
+                    <option value="Tersedia" ${statusText === 'Tersedia' ? 'selected' : ''}>Tersedia</option>
+                    <option value="Habis" ${statusText === 'Habis' ? 'selected' : ''}>Habis</option>
+                </select>
+                <button class="update-status-btn action-btn" style="background-color: #28a745; color: white; padding: 6px 10px; border: none; border-radius: 4px; cursor: pointer;">Update</button>
+            </td>
+        `;
+
+        const updateStockBtn = row.querySelector('.update-stock-btn');
+        const stockInput = row.querySelector('.stock-input');
+        updateStockBtn.addEventListener('click', () => {
+            updateProductStock(product.id, parseInt(stockInput.value), row);
+        });
+
+        const updateStatusBtn = row.querySelector('.update-status-btn');
+        const statusSelect = row.querySelector('.status-select');
+        updateStatusBtn.addEventListener('click', () => {
+            updateProductStatus(product.id, statusSelect.value, row);
+        });
+    });
+}
+
+        async function updateProductStock(productId, newStock, tableRow) {
+    if (isNaN(newStock) || newStock < 0) {
+        showCustomNotification('Stok harus berupa angka >= 0', 'error');
+        return;
+    }
+
+    const confirm = await showCustomConfirm(`Yakin ingin mengubah stok produk #${productId} menjadi ${newStock}?`);
+    if (!confirm) return;
+
+    const updateBtn = tableRow.querySelector('.update-stock-btn');
+    const statusSpan = tableRow.querySelector('.product-status-badge');
+    updateBtn.disabled = true;
+    updateBtn.textContent = 'Menyimpan...';
+
+    try {
+        const res = await fetch(`/api/products/${productId}/stock`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ newStock })
+        });
+
+        const result = await res.json();
+        if (!res.ok) throw new Error(result.message || 'Gagal update stok');
+
+        showCustomNotification(result.message, 'success');
+
+        // Update status di tabel
+        tableRow.cells[5].textContent = newStock; // kolom stok
+        statusSpan.textContent = result.newStatus;
+        statusSpan.className = `product-status-badge ${getProductStatusBadgeClass(result.newStatus)}`;
+    } catch (err) {
+        showCustomNotification(`Gagal: ${err.message}`, 'error');
+    } finally {
+        updateBtn.disabled = false;
+        updateBtn.textContent = 'Update';
+    }
+}
+
+        async function updateProductStatus(productId, newStatus, tableRow) {
+    const confirm = await showCustomConfirm(`Yakin ingin mengubah status produk #${productId} menjadi "${newStatus}"?`);
+    if (!confirm) return;
+
+    const updateBtn = tableRow.querySelector('.update-status-btn');
+    const statusSpan = tableRow.querySelector('.product-status-badge');
+    updateBtn.disabled = true;
+    updateBtn.textContent = 'Menyimpan...';
+
+    try {
+        const res = await fetch(`/api/products/${productId}/status`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ newStatus: newStatus.toLowerCase() })
+        });
+
+        const result = await res.json();
+        if (!res.ok) throw new Error(result.message || 'Gagal update status');
+
+        showCustomNotification(result.message, 'success');
+
+        statusSpan.textContent = result.newStatus;
+        statusSpan.className = `product-status-badge ${getProductStatusBadgeClass(result.newStatus)}`;
+
+        // Jika stok otomatis jadi 0 (status = habis)
+        if (result.stockUpdated && tableRow.cells[5]) {
+            tableRow.cells[5].textContent = '0';
+            const stockInput = tableRow.querySelector('.stock-input');
+            if (stockInput) stockInput.value = 0;
+        }
+    } catch (err) {
+        showCustomNotification(`Gagal: ${err.message}`, 'error');
+    } finally {
+        updateBtn.disabled = false;
+        updateBtn.textContent = 'Update';
+    }
+}
+
+        
+        // --- LOGIKA LAPORAN RIWAYAT PELANGGAN ---
+    async function generateCustomerReport() {
+        loadingCustomerReportMsg.style.display = 'block';
+        customerReportResultContainer.style.display = 'none';
+         printCustomerReportBtn.disabled = true;
+
+    try {
+        const response = await fetch('/api/order/customer-report/all');
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.message || 'Gagal mengambil data.');
+        displayCustomerReport(data);
+    } catch (err) {
+        showCustomNotification(`Error: ${err.message}`, 'error');
+    } finally {
+        loadingCustomerReportMsg.style.display = 'none';
+    }
+}
+
+        
+        function displayCustomerReport(data) {
+            customerReportResultContainer.style.display = 'block';
+            const { summary, items } = data;
+            const formattedStartDate = new Date(summary.startDate + 'T00:00:00').toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'});
+            const formattedEndDate = new Date(summary.endDate + 'T00:00:00').toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'});
+            
+            customerReportInfoEl.innerHTML = ''; // atau bisa dihapus total kalau tak diperlukan
+            customerReportSummaryEl.innerHTML = `<div class="summary-item"><h4>Total Belanja</h4><p>${formatRupiah(summary.totalSpending)}</p></div><div class="summary-item"><h4>Total Transaksi</h4><p>${summary.totalTransactions}</p></div><div class="summary-item"><h4>Total Item Dibeli</h4><p>${summary.totalItems}</p></div>`;
+            
+            printCustomerReportBtn.disabled = false;
+            customerReportTableBody.innerHTML = '';
+            
+            if (items.length === 0) {
+                noCustomerReportDataMsg.style.display = 'block';
+                return;
+            }
+
+            noCustomerReportDataMsg.style.display = 'none';
+            items.forEach(item => {
+                const row = customerReportTableBody.insertRow();
+                const subtotal = item.item_price * item.quantity;
+                row.innerHTML = `<td>${new Date(item.created_at).toLocaleDateString('id-ID', {day:'2-digit', month:'short', year:'numeric'})}</td><td>${item.order_id}</td><td>${item.item_name}</td><td>${item.quantity}</td><td>${formatRupiah(item.item_price)}</td><td>${formatRupiah(subtotal)}</td>`;
+            });
+        }
+        
+// pdf
+async function downloadCustomerReportAsPDF() {
+    const { jsPDF } = window.jspdf;
+    const reportContainer = document.getElementById("customerReportResultContainer");
+    const printBtn = document.getElementById("printCustomerReportBtn");
+    const logoImgPath = 'img/makandalogo.png'; // Pastikan path ke logo ini benar
+
+    if (!reportContainer) {
+        alert("Laporan belum tersedia untuk dicetak.");
+        return;
+    }
+
+    if (printBtn) printBtn.style.display = "none";
+
+    const toDataURL = url => fetch(url)
+        .then(response => response.blob())
+        .then(blob => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+        }));
+
+    try {
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageMargin = 15;
+        
+        // 1. Tambahkan Logo di bagian atas
+        const logoDataUrl = await toDataURL(logoImgPath);
+        const logoWidth = 50;
+        const logoHeight = (await (async () => {
+            const img = new Image();
+            img.src = logoDataUrl;
+            await img.decode();
+            return img.height * logoWidth / img.width;
+        })());
+        
+        const logoX = (pageWidth - logoWidth) / 2;
+        const logoY = 10;
+        pdf.addImage(logoDataUrl, 'PNG', logoX, logoY, logoWidth, logoHeight);
+
+        // --- TAMBAHAN BARU UNTUK ALAMAT ---
+        // Tentukan teks dan propertinya
+        const alamatToko = "jalan Nikel, Bugel mas indah, Karawaci Kota Tangerang";
+        pdf.setFontSize(9); // Ukuran font dibuat lebih kecil untuk alamat
+        pdf.setFont('helvetica', 'normal');
+        pdf.setTextColor(128, 128, 128); // Warna abu-abu agar tidak terlalu mencolok
+
+        // Hitung posisi Y untuk alamat (di bawah logo + sedikit jarak)
+        const alamatY = logoY + logoHeight + 5; // 5mm di bawah logo
+        
+        // Tulis alamat ke PDF dengan alignment 'center'
+        pdf.text(alamatToko, pageWidth / 2, alamatY, { align: 'center' });
+        // --- AKHIR TAMBAHAN BARU ---
+
+        // Beri jarak setelah alamat sebelum konten laporan
+        const contentStartY = alamatY + 10; // Jarak dari alamat ke konten utama
+
+        // 2. Tambahkan sisa konten laporan menggunakan html2canvas
+        const canvas = await html2canvas(reportContainer, {
+         scale: 1.5, // Turunkan scale
+         useCORS: true
+});
+
+        const contentImgData = canvas.toDataURL('image/jpeg', 0.8); // Pakai JPEG
+        const contentImgWidth = pageWidth - (pageMargin * 2);
+        const contentImgHeight = canvas.height * contentImgWidth / canvas.width;
+        
+        // Cek apakah konten butuh halaman baru
+        if (contentStartY + contentImgHeight > pdf.internal.pageSize.getHeight()) {
+            pdf.addPage();
+            pdf.addImage(contentImgData, 'PNG', pageMargin, 10, contentImgWidth, contentImgHeight);
+        } else {
+            pdf.addImage(contentImgData, 'PNG', pageMargin, contentStartY, contentImgWidth, contentImgHeight);
+        }
+        
+        pdf.save('Laporan_Riwayat_Pelanggan_Makanda.pdf');
+
+    } catch (error) {
+        console.error("Gagal membuat PDF:", error);
+        showCustomNotification("Gagal membuat PDF. Pastikan file logo ada.", 'error');
+    } finally {
+        if (printBtn) printBtn.style.display = "inline-block";
+    }
+}
+
+
+
+if (printCustomerReportBtn)
+  printCustomerReportBtn.addEventListener('click', () => {
+    if (!printCustomerReportBtn.disabled) downloadCustomerReportAsPDF();
+  });
+// --- INISIALISASI ---
+        showOrdersContent();
+    });
+</script>
+</body>
+</html>

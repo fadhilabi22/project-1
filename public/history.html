@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Riwayat Order - Toko Makanda</title>
+  <link rel="stylesheet" href="css/style.css" /> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+    <div id="customNotification" class="custom-notification">
+        <p id="customNotificationMessage"></p>
+    </div>
+    <div id="confirmOverlay" class="modal-overlay">
+      <div class="confirm-modal-content">
+        <p id="confirmMessage"></p>
+        <div class="confirm-buttons">
+          <button id="confirmCancelBtn" class="confirm-btn cancel">Cancel</button>
+          <button id="confirmOkBtn" class="confirm-btn ok">OK</button>
+        </div>
+      </div>
+    </div>
+
+
+  <header>
+    <div class="header-container">
+      <div class="logo-container"><img src="img/makandalogo.png" alt="Makanda Logo" class="logo-img"></div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Beranda</a></li>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="tentangkami.html">Tentang Kami</a></li>
+          <li><a href="kontak.html">Kontak</a></li>
+          <li><a href="history.html" class="active">Riwayat</a></li>
+          <li class="cart-icon" id="cartIcon" style="display:none;"> <i class="fa-solid fa-cart-shopping"></i><span class="cart-count">0</span>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content"><h1>Riwayat Pemesanan</h1><p>Lihat semua transaksi yang telah kamu lakukan di Toko Makanda</p></div>
+  </section>
+
+  <section class="order-history">
+    <h2 class="section-title">Order Kamu</h2>
+    <div id="orderList" class="order-list">
+      </div>
+    <p class="no-history-message">Anda belum memiliki riwayat pesanan.</p>
+  </section>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-column">
+        <h3>Toko Makanda</h3>
+        <p>Menyajikan makanan rumahan berkualitas dengan cita rasa yang otentik.</p>
+        <div class="social-icons">
+          <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-tiktok"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="footer-column"><h3>Menu</h3><ul><li><a href="#">Makanan Utama</a></li><li><a href="#">Camilan</a></li><li><a href="#">Minuman</a></li><li><a href="#">Kue & Dessert</a></li></ul></div>
+      <div class="footer-column"><h3>Informasi</h3><ul><li><a href="tentangkami.html">Tentang Kami</a></li><li><a href="#">Cara Pemesanan</a></li><li><a href="#">Kebijakan Privasi</a></li></ul></div>
+      <div class="footer-column"><h3>Kontak</h3><ul><li><i class="fas fa-phone"></i> +62 857-1046-5321</li><li><i class="fas fa-envelope"></i> info@tokomakanda.id</li><li><i class="fas fa-map-marker-alt"></i> Jl. Al-furqon No. 15113, Kota Tangerang</li></ul></div>
+    </div>
+    <div class="copyright">© 2025 Toko Makanda</div>
+  </footer>
+
+  <script>
+    /* ==================================================================== */
+    /* BAGIAN BARU: Fungsi helper untuk notifikasi dan konfirmasi */
+    /* ==================================================================== */
+    function showCustomNotification(message, type = 'info') {
+        const notification = document.getElementById('customNotification');
+        const notificationMessage = document.getElementById('customNotificationMessage');
+        if (!notification || !notificationMessage) return;
+
+        notificationMessage.textContent = message;
+        notification.className = 'custom-notification'; // Reset classes
+        notification.classList.add(type); // 'success' or 'error'
+        notification.classList.add('show');
+
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 3000);
+    }
+
+    function showCustomConfirm(message) {
+        const confirmOverlay = document.getElementById('confirmOverlay');
+        const confirmMessage = document.getElementById('confirmMessage');
+        let confirmOkBtn = document.getElementById('confirmOkBtn');
+        let confirmCancelBtn = document.getElementById('confirmCancelBtn');
+        if(!confirmOverlay || !confirmMessage || !confirmOkBtn || !confirmCancelBtn) return Promise.resolve(false);
+        
+        // Atasi event listener ganda
+        let newOkBtn = confirmOkBtn.cloneNode(true);
+        confirmOkBtn.parentNode.replaceChild(newOkBtn, confirmOkBtn);
+        confirmOkBtn = newOkBtn;
+
+        let newCancelBtn = confirmCancelBtn.cloneNode(true);
+        confirmCancelBtn.parentNode.replaceChild(newCancelBtn, confirmCancelBtn);
+        confirmCancelBtn = newCancelBtn;
+
+        return new Promise((resolve) => {
+            confirmMessage.textContent = message;
+            confirmOverlay.style.display = 'flex';
+
+            confirmOkBtn.onclick = () => {
+                confirmOverlay.style.display = 'none';
+                resolve(true);
+            };
+            confirmCancelBtn.onclick = () => {
+                confirmOverlay.style.display = 'none';
+                resolve(false);
+            };
+        });
+    }
+
+
+    async function loadOrderHistory() {
+      const orderListContainer = document.getElementById('orderList');
+      const noHistoryMessage = document.querySelector('.no-history-message');
+      const userEmail = sessionStorage.getItem('userEmail');
+
+      if (!userEmail) {
+        orderListContainer.innerHTML = '';
+        noHistoryMessage.innerHTML = '<p>Silakan <a href="index.html">login</a> terlebih dahulu untuk melihat riwayat order.</p>';
+        noHistoryMessage.style.display = 'block';
+        return;
+      }
+      noHistoryMessage.style.display = 'none';
+      orderListContainer.innerHTML = '<p style="text-align:center; padding:20px;">Memuat riwayat order...</p>';
+
+      try {
+        const response = await fetch(`/api/order/history/${encodeURIComponent(userEmail)}`);
+        const data = await response.json();
+
+        if (!response.ok) throw new Error(data.message || 'Gagal mengambil data riwayat');
+
+        const orders = data.orders;
+        if (!orders || orders.length === 0) {
+          orderListContainer.innerHTML = '';
+          noHistoryMessage.style.display = 'block';
+          noHistoryMessage.textContent = 'Anda belum memiliki riwayat pesanan.';
+          return;
+        }
+
+        orderListContainer.innerHTML = '';
+        orders.forEach(order => {
+          const div = document.createElement('div');
+          div.className = 'order-item';
+          div.setAttribute('data-order-id', order.id);
+
+          const orderDate = new Date(order.created_at).toLocaleDateString('id-ID', {
+            year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
+          });
+
+          let statusClass = '';
+          let statusTextDisplay = order.status || 'N/A';
+          if (order.status) {
+            const lowerStatus = order.status.toLowerCase();
+            if (lowerStatus.includes('menunggu pembayaran')) statusClass = 'status-menunggu';
+            else if (lowerStatus.includes('pembayaran dikonfirmasi') || lowerStatus.includes('selesai')) statusClass = 'status-dikonfirmasi';
+            else if (lowerStatus.includes('pesanan diproses')) statusClass = 'status-diproses';
+            else if (lowerStatus.includes('gagal') || lowerStatus.includes('dibatalkan')) statusClass = 'status-gagal';
+          }
+
+          let itemsHtml = '<ul>';
+          if (order.items && order.items.length > 0) {
+            order.items.forEach(item => {
+              const itemPrice = typeof item.price === 'number' ? item.price : parseInt(String(item.price).replace(/[Rp.,]/g, '')) || 0;
+              itemsHtml += `
+                <li>
+                  <span class="item-name">${item.name}</span>
+                  <span class="item-price">${formatRupiah(itemPrice)} x ${item.quantity || 1}</span>
+                  ${(statusClass === 'status-menunggu' || statusClass === 'status-gagal') ?
+                  `<button class="delete-item-btn" data-item-id="${item.id}" data-order-id="${order.id}" title="Hapus item ini">&times; Hapus</button>` : ''}
+                </li>`;
+            });
+          } else {
+            itemsHtml += '<li>Tidak ada item dalam order ini (mungkin sudah terhapus semua).</li>';
+          }
+          itemsHtml += '</ul>';
+
+          const viewDetailsButton = `<a href="menu.html?order_id_from_history=${order.id}" class="action-btn view-details-btn">Lihat Detail/Status</a>`;
+
+          let cancelButton = '';
+          if (statusClass === 'status-menunggu' || statusClass === 'status-gagal') {
+            cancelButton = `<button class="action-btn cancel-order-btn" data-order-id="${order.id}" title="Batalkan Seluruh Order Ini">Batalkan Order</button>`;
+          }
+
+          let shippingAddressHtml = '<div class="shipping-address-details">';
+          if (order.shipping_details && order.shipping_details.name) {
+            const sd = order.shipping_details;
+            shippingAddressHtml += `<strong>Alamat Pengiriman:</strong><br>`;
+            shippingAddressHtml += `${sd.name ? `<span>${sd.name}</span><br>` : ''}`;
+            shippingAddressHtml += `${sd.phone ? `<span>${sd.phone}</span><br>` : ''}`;
+            shippingAddressHtml += `${sd.address_line1 ? `<span>${sd.address_line1}</span><br>` : ''}`;
+            shippingAddressHtml += `${sd.address_line2 ? `<span>${sd.address_line2}</span><br>` : ''}`;
+            shippingAddressHtml += `${sd.district ? `<span>Kec. ${sd.district}</span>, ` : ''}`;
+            shippingAddressHtml += `${sd.city ? `<span>Kota ${sd.city}</span>` : ''}`;
+            shippingAddressHtml += `${sd.postal_code ? `<span> - ${sd.postal_code}</span>` : ''}<br>`;
+            if (sd.notes) {
+              shippingAddressHtml += `<em>Catatan: ${sd.notes}</em>`;
+            }
+          } else {
+            shippingAddressHtml += '<p><em>Alamat pengiriman tidak tersedia untuk order ini.</em></p>';
+          }
+          shippingAddressHtml += '</div>';
+
+          div.innerHTML = `
+            <h4>
+              <span>Order <span class="order-id-text">#${order.id}</span></span>
+              <span class="order-status ${statusClass}">${statusTextDisplay}</span>
+            </h4>
+            <p class="order-date"><strong>Tanggal:</strong> ${orderDate}</p>
+            <p><strong>Metode Pembayaran:</strong> ${order.payment_method ? order.payment_method.replace(/_/g, ' ') : 'N/A'}</p>
+            ${shippingAddressHtml}
+            <p><strong>Rincian Item:</strong></p>
+            ${itemsHtml}
+            <p><strong>Total Pembayaran:</strong> ${formatRupiah(parseInt(order.total))}</p>
+            <div class="order-actions">
+              ${viewDetailsButton}
+              ${cancelButton}
+            </div>
+          `;
+          orderListContainer.appendChild(div);
+        });
+
+        attachActionListeners();
+
+      } catch (error) {
+        console.error('Error memuat riwayat:', error);
+        orderListContainer.innerHTML = '';
+        noHistoryMessage.innerHTML = `<p>Terjadi kesalahan: ${error.message}. Coba muat ulang halaman.</p>`;
+        noHistoryMessage.style.display = 'block';
+      }
+    }
+
+    function formatRupiah(angka) {
+      if (isNaN(parseInt(angka))) return 'Rp0';
+      return 'Rp' + parseInt(angka).toLocaleString('id-ID');
+    }
+
+    /* ==================================================================== */
+    /* BAGIAN YANG DIUBAH: Menggunakan showCustomConfirm (async/await) */
+    /* ==================================================================== */
+    function attachActionListeners() {
+      document.querySelectorAll('.delete-item-btn').forEach(button => {
+        button.addEventListener('click', async (event) => { // Fungsi dibuat async
+          const itemId = event.target.dataset.itemId;
+          const userConfirmed = await showCustomConfirm(`Yakin ingin menghapus item ini dari pesanan? Total pesanan akan disesuaikan.`);
+          if (userConfirmed) {
+            await handleDeleteItem(itemId);
+          }
+        });
+      });
+
+      document.querySelectorAll('.cancel-order-btn').forEach(button => {
+        button.addEventListener('click', async (event) => { // Fungsi dibuat async
+          const orderId = event.target.dataset.orderId;
+          const userConfirmed = await showCustomConfirm(`Yakin ingin membatalkan seluruh order ID: ${orderId}? Tindakan ini tidak dapat dibatalkan.`);
+          if (userConfirmed) {
+            await handleDeleteEntireOrder(orderId);
+          }
+        });
+      });
+    }
+
+    /* ==================================================================== */
+    /* BAGIAN YANG DIUBAH: Menggunakan showCustomNotification */
+    /* ==================================================================== */
+    async function handleDeleteItem(itemId) {
+      try {
+        const response = await fetch(`/api/order/item/${itemId}`, { method: 'DELETE' });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.message || 'Gagal menghapus item.');
+        showCustomNotification(data.message || 'Item berhasil dihapus!', 'success');
+        loadOrderHistory();
+      } catch (error) {
+        console.error('Error menghapus item:', error);
+        showCustomNotification(`Gagal menghapus item: ${error.message}`, 'error');
+      }
+    }
+
+    async function handleDeleteEntireOrder(orderId) {
+      try {
+        const response = await fetch(`/api/order/${orderId}`, { method: 'DELETE' });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.message || 'Gagal membatalkan order.');
+        showCustomNotification(data.message || 'Order berhasil dibatalkan!', 'success');
+        loadOrderHistory();
+      } catch (error) {
+        console.error('Error membatalkan order:', error);
+        showCustomNotification(`Gagal membatalkan order: ${error.message}`, 'error');
+      }
+    }
+
+    loadOrderHistory();
+  </script>
+</body>
+</html>

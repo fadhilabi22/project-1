@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Toko Makanda - Makanan Rumahan Terbaik</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div id="customNotification" class="custom-notification">
+      <p id="customNotificationMessage"></p>
+  </div>
+
+  <header>
+    <div class="header-container">
+        <div class="logo-container">
+            <img src="img/makandalogo.png" alt="Makanda Logo" class="logo-img">
+        </div>
+      <nav>
+        <ul id="navLinks">
+          <li><a href="index.html">Beranda</a></li>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="tentangkami.html">Tentang Kami</a></li>
+          <li><a href="kontak.html">Kontak</a></li>
+          </ul>
+         <div class="cart-icon" id="cartIcon">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span class="cart-count">0</span>
+        </div>
+      </nav>
+    </div>
+  </header>
+  
+    <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal-btn" data-modal-id="loginModal">&times;</span>
+      <h2>Login ke Toko Makanda</h2>
+      <form id="loginForm">
+        <label for="loginEmail">Email:</label>
+        <input type="email" id="loginEmail" name="loginEmail" required>
+        <label for="loginPassword">Password:</label>
+        <input type="password" id="loginPassword" name="loginPassword" required>
+        <button type="submit" id="loginSubmitBtn">Login</button>
+        <p>Belum punya akun? <a href="#" id="showRegister">Daftar di sini</a></p>
+      </form>
+    </div>
+  </div>
+
+  <div id="registerModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal-btn" data-modal-id="registerModal">&times;</span>
+      <h2>Daftar Akun Baru</h2>
+      <form id="registerForm">
+        <label for="registerEmail">Email:</label>
+        <input type="email" id="registerEmail" name="registerEmail" required>
+        <label for="registerPassword">Password:</label>
+        <input type="password" id="registerPassword" name="registerPassword" required>
+        <label for="confirmPassword">Konfirmasi Password:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required>
+        <button type="submit" id="registerSubmitBtn">Daftar</button>
+        <p>Sudah punya akun? <a href="#" id="showLogin">Login di sini</a></p>
+      </form>
+    </div>
+  </div>
+
+  <section class="hero">
+    <div class="hero-content">  
+      <a href="menu.html" class="btn">Lihat Menu Kami</a>
+    </div>
+  </section>
+
+  <section class="categories">
+  <h2 class="section-title">Kategori Makanan</h2>
+  <div class="category-cards">
+    <div class="category-card" data-category="makanan-utama">
+      <div class="category-image" style="background-image: url('img/rendang_kategori.jpg');"></div>
+      <div class="category-content"><h3>Makanan Utama</h3><p>Pilihan menu utama yang lezat dan mengenyangkan</p><a href="menu.html?kategori=makanan-utama" class="btn">Lihat</a></div>
+    </div>
+    <div class="category-card" data-category="camilan">
+      <div class="category-image" style="background-image: url('img/camilan_kategori.jpg');"></div>
+      <div class="category-content"><h3>Camilan</h3><p>Aneka cemilan tradisional untuk teman santai</p><a href="menu.html?kategori=camilan" class="btn">Lihat</a></div>
+    </div>
+    <div class="category-card" data-category="minuman">
+      <div class="category-image" style="background-image: url('img/minuman_kategori.jpg');"></div>
+      <div class="category-content"><h3>Minuman</h3><p>Minuman segar pendamping makanan favorit</p><a href="menu.html?kategori=minuman" class="btn">Lihat</a></div>
+    </div>
+    <div class="category-card" data-category="kue-dessert">
+      <div class="category-image" style="background-image: url('img/kue_kategori.jpg');"></div>
+      <div class="category-content"><h3>Kue & Dessert</h3><p>Aneka kue dan pencuci mulut yang manis</p><a href="menu.html?kategori=kue-dessert" class="btn">Lihat</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="products">
+  <h2 class="section-title">Menu Favorit Kami</h2>
+  <div class="product-grid" id="productGridHome">
+      <p style="text-align:center; width:100%;">Lihat semua menu lengkap kami <a href="menu.html">di sini</a>.</p>
+  </div>
+</section>
+
+<section class="testimonials">
+    <div class="testimonials-container">
+        <h2 class="section-title">Testimoni Pelanggan</h2>
+        <div class="testimonial-grid">
+            <div class="testimonial-card"><p class="testimonial-text">"Makanan dari Toko Makanda selalu menjadi pilihan saya untuk acara keluarga. Rasanya seperti masakan rumah sendiri, tapi lebih praktis!"</p><div class="testimonial-author"><div class="author-avatar" style="background-image: url('img/user1.jpg');"></div><div class="author-info"><h4>Dewi Sartika</h4><p>Jakarta</p></div></div></div>
+            <div class="testimonial-card"><p class="testimonial-text">"Saya pelanggan setia Toko Makanda sejak 3 tahun lalu. Kualitas makanannya selalu konsisten dan pelayanannya cepat."</p><div class="testimonial-author"><div class="author-avatar" style="background-image: url('img/user2.jpg');"></div><div class="author-info"><h4>Budi Santoso</h4><p>Tangerang</p></div></div></div>
+            <div class="testimonial-card"><p class="testimonial-text">"Rendang dari Toko Makanda adalah yang terbaik yang pernah saya coba. Bumbunya meresap dan dagingnya empuk sempurna!"</p><div class="testimonial-author"><div class="author-avatar" style="background-image: url('img/user3.jpg');"></div><div class="author-info"><h4>Ratna Dewi</h4><p>Depok</p></div></div></div>
+        </div>
+    </div>
+</section>
+
+  <section class="how-it-works">
+    <h2 class="section-title">Cara Pemesanan Mudah</h2>
+    <div class="steps">
+      <div class="step card"><div class="step-icon">🛒</div><h3>Pilih Menu</h3><p>Pilih makanan favorit Anda dari berbagai pilihan menu yang tersedia</p></div>
+      <div class="step card"><div class="step-icon">📝</div><h3>Pesan & Bayar</h3><p>Lakukan pemesanan dan pembayaran melalui berbagai metode yang tersedia</p></div>
+      <div class="step card"><div class="step-icon">👨‍🍳</div><h3>Kami Memasak</h3><p>Tunggu sementara koki handal kami menyiapkan pesanan Anda</p></div>
+      <div class="step card"><div class="step-icon">🚚</div><h3>Pengiriman</h3><p>Pesanan Anda akan dikirim langsung ke lokasi yang ditentukan</p></div>
+    </div>
+</section>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-column">
+        <h3>Toko Makanda</h3>
+        <p>Menyajikan makanan rumahan berkualitas dengan cita rasa yang otentik.</p>
+        <div class="social-icons">
+          <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-tiktok"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="footer-column"><h3>Menu</h3><ul><li><a href="menu.html?kategori=makanan-utama">Makanan Utama</a></li><li><a href="menu.html?kategori=camilan">Camilan</a></li><li><a href="menu.html?kategori=minuman">Minuman</a></li><li><a href="menu.html?kategori=kue-dessert">Kue & Dessert</a></li></ul></div>
+      <div class="footer-column"><h3>Informasi</h3><ul><li><a href="tentangkami.html">Tentang Kami</a></li><li><a href="#how-it-works">Cara Pemesanan</a></li><li><a href="#">Kebijakan Privasi</a></li></ul></div>
+      <div class="footer-column"><h3>Kontak</h3><ul><li><i class="fas fa-phone"></i> +62 857-1046-5321</li><li><i class="fas fa-envelope"></i> info@tokomakanda.id</li><li><i class="fas fa-map-marker-alt"></i> Jl. Al-furqon No. 15113, Kota Tangerang</li></ul></div>
+    </div>
+    <div class="copyright">© 2025 Toko Makanda</div>
+  </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const loginModal = document.getElementById('loginModal');
+    const registerModal = document.getElementById('registerModal');
+    const navLinksUl = document.getElementById('navLinks');
+    const cartIcon = document.getElementById('cartIcon');
+
+    /* ==================================================================== */
+    /* BAGIAN BARU: Fungsi helper untuk notifikasi custom */
+    /* ==================================================================== */
+    function showCustomNotification(message, type = 'info') {
+        const notification = document.getElementById('customNotification');
+        const notificationMessage = document.getElementById('customNotificationMessage');
+        if (!notification || !notificationMessage) return;
+
+        notificationMessage.textContent = message;
+        notification.className = 'custom-notification'; // Reset classes
+        notification.classList.add(type); // 'success' or 'error'
+        notification.classList.add('show');
+
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 3000);
+    }
+
+    function updateNavLinks() {
+        const userEmail = sessionStorage.getItem('userEmail');
+        const userRole = sessionStorage.getItem('userRole');
+        
+        navLinksUl.innerHTML = `
+            <li><a href="index.html">Beranda</a></li>
+            <li><a href="menu.html">Menu</a></li>
+            <li><a href="tentangkami.html">Tentang Kami</a></li>
+            <li><a href="kontak.html">Kontak</a></li>
+        `;
+
+        if (userEmail) {
+            const greetingLi = document.createElement('li');
+            greetingLi.innerHTML = `<span class="user-greeting">Hi, ${userEmail.split('@')[0]}!</span>`;
+            navLinksUl.appendChild(greetingLi);
+
+            const historyLi = document.createElement('li');
+            historyLi.innerHTML = `<a href="history.html">Riwayat</a>`;
+            navLinksUl.appendChild(historyLi);
+
+            const logoutLi = document.createElement('li');
+            logoutLi.innerHTML = `<button id="logoutBtn">Logout</button>`;
+            navLinksUl.appendChild(logoutLi);
+
+            document.getElementById('logoutBtn').addEventListener('click', () => {
+                sessionStorage.removeItem('userEmail');
+                sessionStorage.removeItem('userRole');
+                sessionStorage.removeItem('makandaCartItems');
+                updateNavLinks();
+                window.location.href = 'index.html';
+            });
+            if(cartIcon) cartIcon.style.display = 'flex';
+        } else {
+            const loginLi = document.createElement('li');
+            loginLi.innerHTML = `<a href="#" id="loginBtnNav">Login</a>`;
+            navLinksUl.appendChild(loginLi);
+            document.getElementById('loginBtnNav').addEventListener('click', (e) => {
+                e.preventDefault();
+                loginModal.style.display = 'block';
+            });
+            if(cartIcon) cartIcon.style.display = 'none';
+        }
+    }
+    
+    function updateCartCountDisplay() {
+        const storedCart = JSON.parse(sessionStorage.getItem('makandaCartItems')) || [];
+        const cartCountSpan = document.querySelector('.cart-count');
+        if (cartCountSpan) {
+            cartCountSpan.textContent = storedCart.length;
+        }
+    }
+
+    document.querySelectorAll('.close-modal-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.getElementById(btn.dataset.modalId).style.display = 'none';
+        });
+    });
+
+    document.getElementById('showRegister')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      loginModal.style.display = 'none';
+      registerModal.style.display = 'block';
+    });
+
+    document.getElementById('showLogin')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      registerModal.style.display = 'none';
+      loginModal.style.display = 'block';
+    });
+
+    window.addEventListener('click', (e) => {
+      if (e.target === loginModal) loginModal.style.display = 'none';
+      if (e.target === registerModal) registerModal.style.display = 'none';
+    });
+
+    /* ==================================================================== */
+    /* BAGIAN YANG DIPERBAIKI: Menghapus simulasi & menghubungkan ke backend */
+    /* ==================================================================== */
+    document.getElementById('loginForm')?.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const loginSubmitBtn = document.getElementById('loginSubmitBtn');
+        loginSubmitBtn.disabled = true;
+        loginSubmitBtn.textContent = 'Memproses...';
+
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+
+        try {
+            // Menggunakan fetch asli ke backend
+            const res = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await res.json();
+
+            if (res.ok && data.role) {
+                sessionStorage.setItem('userEmail', data.email);
+                sessionStorage.setItem('userRole', data.role);
+                
+                showCustomNotification(data.message || 'Login berhasil!', 'success');
+                
+                loginModal.style.display = 'none';
+                updateNavLinks();
+                updateCartCountDisplay();
+
+                setTimeout(() => {
+                    if (data.role === 'admin') {
+                        window.location.href = 'admin.html';
+                    } else {
+                        window.location.href = 'menu.html';
+                    }
+                }, 1500);
+
+            } else {
+                showCustomNotification(data.message || 'Login gagal. Periksa kembali email dan password Anda.', 'error');
+            }
+        } catch (err) {
+            console.error("Login error:", err);
+            showCustomNotification('Terjadi kesalahan pada sistem. Silakan coba lagi nanti.', 'error');
+        } finally {
+            loginSubmitBtn.disabled = false;
+            loginSubmitBtn.textContent = 'Login';
+        }
+    });
+
+    /* ==================================================================== */
+    /* BAGIAN YANG DIPERBAIKI: Form registrasi juga pakai notifikasi custom */
+    /* ==================================================================== */
+    document.getElementById('registerForm')?.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const registerSubmitBtn = document.getElementById('registerSubmitBtn');
+        registerSubmitBtn.disabled = true;
+        registerSubmitBtn.textContent = 'Memproses...';
+
+        const email = document.getElementById('registerEmail').value;
+        const password = document.getElementById('registerPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        if (password !== confirmPassword) {
+            showCustomNotification('Password dan konfirmasi password tidak cocok!', 'error');
+            registerSubmitBtn.disabled = false;
+            registerSubmitBtn.textContent = 'Daftar';
+            return;
+        }
+
+        try {
+            // Menggunakan fetch asli ke backend
+            const res = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await res.json();
+
+            if (res.status === 201) {
+                showCustomNotification(data.message || 'Registrasi berhasil! Silakan login.', 'success');
+                document.getElementById('registerForm').reset();
+                registerModal.style.display = 'none';
+                loginModal.style.display = 'block';
+            } else {
+                showCustomNotification(data.message || 'Registrasi gagal.', 'error');
+            }
+        } catch (err) {
+            console.error("Register error:", err);
+            showCustomNotification('Terjadi kesalahan pada sistem saat registrasi.', 'error');
+        } finally {
+            registerSubmitBtn.disabled = false;
+            registerSubmitBtn.textContent = 'Daftar';
+        }
+    });
+
+    // Initial Setup
+    updateNavLinks();
+    updateCartCountDisplay();
+});
+</script>
+</body>
+</html>

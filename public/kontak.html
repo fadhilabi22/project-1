@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kontak - Toko Makanda</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+</head>
+<body>
+    <div id="customNotification" class="custom-notification">
+        <p id="customNotificationMessage"></p>
+    </div>
+
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <img src="img/makandalogo.png" alt="Makanda Logo" class="logo-img" />
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Beranda</a></li>
+                    <li><a href="menu.html">Menu</a></li>
+                    <li><a href="tentangkami.html">Tentang Kami</a></li>
+                    <li><a href="kontak.html" class="active">Kontak</a></li>
+                    <li><a href="#" id="loginBtn">Login</a></li>
+                    <li><a href="history.html">Riwayat</a></li>
+                    <li class="cart-icon">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <span class="cart-count">0</span>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="contact-section">
+        <div class="contact-container">
+            <h1>Kontak Kami</h1>
+            <p>Kalau ada pertanyaan, kritik, atau pesan, jangan ragu untuk menghubungi kami!</p>
+
+            <div class="contact-info">
+                <p><i class="fa-solid fa-phone"></i> Telepon: +62 857-1046-5321</p>
+                <p><i class="fa-solid fa-envelope"></i> Email: info@tokomakanda.id</p>
+                <p><i class="fa-solid fa-map-marker-alt"></i> Alamat: Jl. Al-furqon No. 15113, Kota Tangerang</p>
+            </div>
+
+            <form id="contactForm" class="contact-form">
+                <label for="name">Nama</label>
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Nama lengkap"
+                    required
+                />
+
+                <label for="email">Email</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Email kamu"
+                    required
+                />
+
+                <label for="message">Pesan</label>
+                <textarea
+                    id="message"
+                    name="message"
+                    rows="5"
+                    placeholder="Tulis pesan kamu di sini..."
+                    required
+                ></textarea>
+
+                <button type="submit">Kirim Pesan</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>Toko Makanda</h3>
+                <p>Menyajikan makanan rumahan berkualitas dengan cita rasa yang otentik.</p>
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-tiktok"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Menu</h3>
+                <ul>
+                    <li><a href="#">Makanan Utama</a></li>
+                    <li><a href="#">Camilan</a></li>
+                    <li><a href="#">Minuman</a></li>
+                    <li><a href="#">Kue & Dessert</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Informasi</h3>
+                <ul>
+                    <li><a href="tentangkami.html">Tentang Kami</a></li>
+                    <li><a href="#">Cara Pemesanan</a></li>
+                    <li><a href="#">Kebijakan Privasi</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Kontak</h3>
+                <ul>
+                    <li><i class="fas fa-phone"></i> +62 857-1046-5321</li>
+                    <li><i class="fas fa-envelope"></i> info@tokomakanda.id</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Jl. Al-furqon No. 15113, Kota Tangerang</li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">© 2025 Toko Makanda</div>
+    </footer>
+
+    <script>
+        /* ==================================================================== */
+        /* BAGIAN BARU: Fungsi helper untuk notifikasi custom */
+        /* ==================================================================== */
+        function showCustomNotification(message, type = 'info') {
+            const notification = document.getElementById('customNotification');
+            const notificationMessage = document.getElementById('customNotificationMessage');
+            if (!notification || !notificationMessage) return;
+
+            notificationMessage.textContent = message;
+            notification.className = 'custom-notification'; // Reset classes
+            notification.classList.add(type); // 'success' or 'error'
+            notification.classList.add('show');
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        const form = document.getElementById('contactForm');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const button = form.querySelector('button[type="submit"]');
+            button.disabled = true;
+            button.textContent = 'Mengirim...';
+
+            const data = {
+                name: form.name.value.trim(),
+                email: form.email.value.trim(),
+                message: form.message.value.trim(),
+            };
+
+            // Validasi sederhana
+            if (!data.name || !data.email || !data.message) {
+                // BAGIAN YANG DIUBAH: Menggunakan notifikasi custom
+                showCustomNotification('Mohon isi semua field yang wajib.', 'error');
+                button.disabled = false;
+                button.textContent = 'Kirim Pesan';
+                return;
+            }
+
+            try {
+                // NOTE: Ganti URL '/api/contact' jika endpointmu berbeda
+                const response = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    // BAGIAN YANG DIUBAH: Menggunakan notifikasi custom
+                    showCustomNotification('Pesan berhasil dikirim! Terima kasih.', 'success');
+                    form.reset();
+                } else {
+                    // BAGIAN YANG DIUBAH: Menggunakan notifikasi custom
+                    showCustomNotification('Gagal mengirim pesan: ' + (result.message || 'Error tidak diketahui'), 'error');
+                }
+            } catch (error) {
+                // BAGIAN YANG DIUBAH: Menggunakan notifikasi custom
+                showCustomNotification('Terjadi kesalahan jaringan: ' + error.message, 'error');
+            } finally {
+                button.disabled = false;
+                button.textContent = 'Kirim Pesan';
+            }
+        });
+    </script>
+</body>
+</html>
