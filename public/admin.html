@@ -327,69 +327,115 @@
         });
 
         // Fungsi ini bertugas membuat struktrur PDF untuk resi
-        async function generateAndPrintReceipt(order) {
-            const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF('p', 'mm', [80, 140]); // Ukuran kertas struk thermal (lebar 80mm)
+        // --- FUNGSI BARU DENGAN LOGO ---
+async function generateAndPrintReceipt(order) {
+    // Helper function untuk mengubah gambar menjadi format yang bisa dibaca PDF
+    const toDataURL = url => fetch(url)
+        .then(response => response.blob())
+        .then(blob => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+        }));
 
-            // --- Header Resi ---
-            pdf.setFont('helvetica', 'bold');
-            pdf.setFontSize(12);
-            pdf.text('Toko Makanda', 40, 10, { align: 'center' });
-            
-            pdf.setFont('helvetica', 'normal');
-            pdf.setFontSize(7);
-            pdf.text('Jalan Nikel, Bugel Mas Indah, Karawaci, Tangerang', 40, 14, { align: 'center' });
-            pdf.line(5, 16, 75, 16); // Garis pemisah
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('p', 'mm', [80, 140]); // Ukuran kertas struk thermal (lebar 80mm)
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    let currentY = 5; // Mulai dari posisi Y atas
 
-            // --- Detail Order ---
-            pdf.setFontSize(8);
-            pdf.text(`ID Order: #${order.id}`, 5, 20);
-            pdf.text(`Tanggal: ${new Date(order.created_at).toLocaleString('id-ID')}`, 5, 24);
-            pdf.text(`Status: ${order.status}`, 5, 28);
-            pdf.text(`Kasir: Admin`, 75, 20, { align: 'right' });
+    // --- Header Resi dengan LOGO ---
+    const logoImgPath = 'img/makandalogo.png'; // Pastikan path ini benar
+    const alamatToko = "Jalan Nikel, Bugel Mas Indah, Karawaci, Tangerang";
 
+    try {
+        const logoDataUrl = await toDataURL(logoImgPath);
+        const logoWidth = 30; // Lebar logo di resi (lebih kecil dari laporan)
+        const img = new Image();
+        img.src = logoDataUrl;
+        await img.decode();
+        const logoHeight = img.height * logoWidth / img.width;
+        const logoX = (pageWidth - logoWidth) / 2;
 
-            // --- Detail Pelanggan & Pengiriman ---
-            if(order.shipping_details) {
-                pdf.text(`Pelanggan: ${order.shipping_details.name || order.user_email}`, 5, 32);
-                pdf.text(`Telp: ${order.shipping_details.phone || 'N/A'}`, 5, 36);
-            }
-            pdf.line(5, 40, 75, 40); // Garis pemisah
+        // Gambar Logo di PDF
+        pdf.addImage(logoDataUrl, 'JPEG', logoX, currentY, logoWidth, logoHeight, undefined, 'MEDIUM');
+        currentY += logoHeight + 2; // Pindahkan posisi Y ke bawah logo
 
-            // --- Tabel Item ---
-            let currentY = 44;
-            pdf.setFont('helvetica', 'bold');
-            pdf.text('Item', 5, currentY);
-            pdf.text('Qty', 45, currentY);
-            pdf.text('Harga', 75, currentY, { align: 'right' });
-            pdf.setFont('helvetica', 'normal');
-            currentY += 4;
+    } catch(err) {
+        console.error("Gagal memuat logo, menggunakan teks fallback:", err);
+        // Fallback jika logo gagal dimuat
+        pdf.setFont('helvetica', 'bold');
+        pdf.setFontSize(12);
+        pdf.text('Toko Makanda', 40, currentY + 5, { align: 'center' });
+        currentY += 10;
+    }
 
-            order.items.forEach(item => {
-                pdf.text(item.name, 5, currentY, { maxWidth: 38 });
-                pdf.text(item.quantity.toString(), 45, currentY);
-                pdf.text(formatRupiah(item.price * item.quantity), 75, currentY, { align: 'right' });
-                currentY += 4;
-            });
+    // Gambar alamat
+    pdf.setFont('helvetica', 'normal');
+    pdf.setFontSize(7);
+    pdf.text(alamatToko, pageWidth / 2, currentY, { align: 'center' });
+    currentY += 4;
+    pdf.line(5, currentY, 75, currentY); // Garis pemisah
+    currentY += 4;
 
-            // --- Total ---
-            pdf.line(5, currentY, 75, currentY);
-            currentY += 4;
-            pdf.setFont('helvetica', 'bold');
-            pdf.text('TOTAL', 5, currentY);
-            pdf.text(formatRupiah(order.total), 75, currentY, { align: 'right' });
-            currentY += 4;
-            pdf.text('Metode Bayar:', 5, currentY);
-            pdf.text((order.payment_method || 'N/A').replace(/_/g, ' '), 75, currentY, { align: 'right' });
+    // --- Detail Order ---
+    pdf.setFontSize(8);
+    pdf.text(`ID Order: #${order.id}`, 5, currentY);
+    pdf.text(`Kasir: Admin`, 75, currentY, { align: 'right' });
+    currentY += 4;
+    pdf.text(`Tanggal: ${new Date(order.created_at).toLocaleString('id-ID')}`, 5, currentY);
+    currentY += 4;
+    pdf.text(`Status: ${order.status}`, 5, currentY);
+    currentY += 4;
 
-            // --- Footer ---
-            currentY += 8;
-            pdf.setFontSize(7);
-            pdf.text('Terima kasih telah berbelanja!', 40, currentY, { align: 'center' });
+    // --- Detail Pelanggan & Pengiriman ---
+    if (order.shipping_details) {
+        pdf.text(`Pelanggan: ${order.shipping_details.name || order.user_email}`, 5, currentY);
+        currentY += 4;
+        pdf.text(`Telp: ${order.shipping_details.phone || 'N/A'}`, 5, currentY);
+        currentY += 4;
+    }
+    pdf.line(5, currentY, 75, currentY); // Garis pemisah
+    currentY += 4;
 
-            // --- Simpan PDF ---
-            pdf.save(`Resi_Makanda_${order.id}.pdf`);
+    // --- Tabel Item ---
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('Item', 5, currentY);
+    pdf.text('Qty', 45, currentY);
+    pdf.text('Harga', 75, currentY, { align: 'right' });
+    currentY += 4;
+    
+    pdf.setFont('helvetica', 'normal');
+    order.items.forEach(item => {
+        // Cek jika butuh halaman baru
+        if (currentY > 125) { 
+            pdf.addPage();
+            currentY = 10;
         }
+        pdf.text(item.name, 5, currentY, { maxWidth: 38 });
+        pdf.text(item.quantity.toString(), 45, currentY);
+        pdf.text(formatRupiah(item.price * item.quantity), 75, currentY, { align: 'right' });
+        currentY += 4;
+    });
+
+    // --- Total ---
+    pdf.line(5, currentY, 75, currentY);
+    currentY += 4;
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('TOTAL', 5, currentY);
+    pdf.text(formatRupiah(order.total), 75, currentY, { align: 'right' });
+    currentY += 4;
+    pdf.text('Metode Bayar:', 5, currentY);
+    pdf.text((order.payment_method || 'N/A').replace(/_/g, ' '), 75, currentY, { align: 'right' });
+
+    // --- Footer ---
+    currentY += 8;
+    pdf.setFontSize(7);
+    pdf.text('Terima kasih telah berbelanja!', 40, currentY, { align: 'center' });
+
+    // --- Simpan PDF ---
+    pdf.save(`Resi_Makanda_${order.id}.pdf`);
+}
 
 
         // --- LOGIKA KELOLA PRODUK ---
