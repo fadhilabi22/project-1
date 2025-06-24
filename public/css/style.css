@@ -1535,3 +1535,11 @@ footer {
    display: none !important;
   }
  }
+ /* Aturan untuk gambar produk di tabel admin */
+.product-img-admin {
+    width: 60px;              /* Atur lebar gambar menjadi 60px */
+    height: 60px;             /* Atur tinggi gambar menjadi 60px */
+    object-fit: cover;        /* Ini bagian penting! Gambar akan mengisi kotak 60x60 tanpa menjadi gepeng/distorsi. Kelebihannya akan terpotong. */
+    border-radius: 8px;       /* Opsional: membuat sudut gambar sedikit melengkung agar lebih modern. */
+    vertical-align: middle;   /* Opsional: menjaga gambar tetap sejajar dengan teks di baris yang sama. */
+}
