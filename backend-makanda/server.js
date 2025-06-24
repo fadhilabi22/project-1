@@ -5,28 +5,32 @@ const bodyParser = require('body-parser');
 const authRoutes = require('./routes/auth');
 const orderRoutes = require('./routes/order');
 const contactRoutes = require('./routes/contact');
-const productRoutes = require('./routes/products'); // <-- PERBAIKI INI: pastikan nama file adalah 'products.js'
+const productRoutes = require('./routes/products');
 
 const app = express();
-const PORT = 3000;
+// PERBAIKAN #1: Gunakan port dari environment variable Railway
+const PORT = process.env.PORT || 3000;
 
 // Middleware
+// (Catatan: bodyParser.json() sudah ada di express.json() di versi Express baru, tapi ini tetap berfungsi)
 app.use(bodyParser.json());
 
-// Serve static files dari folder public
-app.use(express.static(path.join(__dirname, '..', 'public')));
+// PERBAIKAN #2: Perbaiki path ke folder 'public'
+// Ini akan menyajikan file seperti user2.jpg dari root URL
+app.use(express.static(path.join(__dirname, 'public')));
 
 // API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/order', orderRoutes);
 app.use('/api/contact', contactRoutes);
-app.use('/api/products', productRoutes); // <-- PERBAIKI INI: ubah menjadi '/api/products'
+app.use('/api/products', productRoutes);
 
-// Tangkap semua request lain (deep linking SPA)
+// Tangkap semua request lain dan arahkan ke index.html (untuk Single Page Application)
 app.get('*', (req, res) => {    
-    res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
+    // PERBAIKAN #2: Perbaiki path ke index.html juga
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-app.listen(PORT, () => {
-    console.log(`Server jalan di http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => { // Tambahkan '0.0.0.0' agar bisa diakses dari luar container
+    console.log(`Server jalan di port ${PORT}`);
 });
